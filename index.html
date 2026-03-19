@@ -468,7 +468,7 @@
   <section id="snacks" class="py-12 md:py-16 px-4 bg-gradient-to-b from-cream to-gold/20">
     <div class="max-w-5xl mx-auto">
       <h2 class="font-fun text-4xl md:text-5xl font-bold text-field-dark text-center mb-2">
-        &#127839; Snack Signup
+        &#127818; Snack Signup
       </h2>
       <p class="text-center text-gray-600 mb-8">We need 2 volunteers per game &mdash; one for snacks, one for drinks. Claim your spot!</p>
 
@@ -973,8 +973,8 @@
             <thead>
               <tr class="bg-field-dark text-white font-fun">
                 <th class="px-4 py-3 text-left">Game Date</th>
-                <th class="px-4 py-3 text-center">&#127839; Snacks</th>
-                <th class="px-4 py-3 text-center">&#129380; Drinks</th>
+                <th class="px-4 py-3 text-center">&#127818; Snacks</th>
+                <th class="px-4 py-3 text-center">&#129475; Drinks</th>
               </tr>
             </thead>
             <tbody>
@@ -1050,31 +1050,35 @@
         const drinkClaimed = snackData[drinkKey];
 
         html += `<div class="bg-white rounded-xl shadow-md p-4 border-l-4 ${borderColor}">`;
+
+        // Top row: date/time left, calendar button right
         html += `<div class="flex justify-between items-start">`;
         html += `<div>`;
         html += `<div class="font-fun text-lg font-bold text-field-dark">${dateStr} &bull; ${g.time}</div>`;
         html += `<div class="text-xs text-gray-500 mt-0.5">vs ${g.opponent} &bull; Field ${g.field}</div>`;
+        html += `<span class="${jerseyClass} px-2 py-0.5 rounded-full text-xs font-bold mt-1 inline-block">${g.jersey.toUpperCase()}</span>`;
         html += `</div>`;
-        html += `<div class="text-right">`;
-        html += `<span class="${jerseyClass} px-3 py-1 rounded-full text-xs font-bold">${g.jersey.toUpperCase()}</span>`;
-        html += `</div>`;
+        html += `<button onclick="downloadICS('${g.date}','${g.rawTime}','${g.opponent}','${g.field}','${g.jersey}')" class="text-xs text-field-light font-semibold whitespace-nowrap">&#128197; Add to Cal</button>`;
         html += `</div>`;
 
-        // Snack & drink status
-        html += `<div class="flex gap-3 mt-2 text-xs">`;
+        // Bottom row: snack/drink status on far right
+        html += `<div class="flex justify-end mt-2">`;
+
+        // Right side: snack & drink status stacked (tappable)
+        html += `<div class="flex flex-col items-end gap-1 text-xs">`;
         if (snackClaimed) {
-          html += `<span class="inline-flex items-center gap-1 bg-green-100 text-green-800 px-2 py-0.5 rounded-full font-semibold">&#127839; ${snackClaimed}</span>`;
+          html += `<button onclick="showFamilyDropdown(this,'${g.date}','snacks')" class="inline-flex items-center gap-1 bg-green-100 text-green-800 px-2 py-0.5 rounded-full font-semibold cursor-pointer">&#127818; ${snackClaimed}</button>`;
         } else {
-          html += `<span class="inline-flex items-center gap-1 bg-orange-50 text-orange-500 px-2 py-0.5 rounded-full font-semibold border border-dashed border-orange-300">&#127839; Needs volunteer</span>`;
+          html += `<button onclick="showFamilyDropdown(this,'${g.date}','snacks')" class="inline-flex items-center gap-1 bg-orange-50 text-orange-500 px-2 py-0.5 rounded-full font-semibold border border-dashed border-orange-300 cursor-pointer">&#127818; Needed</button>`;
         }
         if (drinkClaimed) {
-          html += `<span class="inline-flex items-center gap-1 bg-blue-100 text-blue-800 px-2 py-0.5 rounded-full font-semibold">&#129380; ${drinkClaimed}</span>`;
+          html += `<button onclick="showFamilyDropdown(this,'${g.date}','drinks')" class="inline-flex items-center gap-1 bg-blue-100 text-blue-800 px-2 py-0.5 rounded-full font-semibold cursor-pointer">&#129475; ${drinkClaimed}</button>`;
         } else {
-          html += `<span class="inline-flex items-center gap-1 bg-blue-50 text-blue-400 px-2 py-0.5 rounded-full font-semibold border border-dashed border-blue-300">&#129380; Needs volunteer</span>`;
+          html += `<button onclick="showFamilyDropdown(this,'${g.date}','drinks')" class="inline-flex items-center gap-1 bg-blue-50 text-blue-400 px-2 py-0.5 rounded-full font-semibold border border-dashed border-blue-300 cursor-pointer">&#129475; Needed</button>`;
         }
         html += `</div>`;
 
-        html += `<button onclick="downloadICS('${g.date}','${g.rawTime}','${g.opponent}','${g.field}','${g.jersey}')" class="mt-2 text-xs text-field-light font-semibold">&#128197; Add to Calendar</button>`;
+        html += `</div>`;
         html += `</div>`;
 
         // Insert bye week card after week 4
