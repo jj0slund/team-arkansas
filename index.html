@@ -113,12 +113,12 @@
 
     /* Dropdown styling */
     .family-dropdown {
-      position: absolute;
+      position: fixed;
       background: white;
       border: 2px solid #2d6a4f;
       border-radius: 12px;
       box-shadow: 0 10px 25px rgba(0,0,0,0.2);
-      z-index: 50;
+      z-index: 200;
       max-height: 300px;
       overflow-y: auto;
       min-width: 200px;
@@ -1024,6 +1024,7 @@
     function closeDropdown() {
       if (activeDropdown) { activeDropdown.remove(); activeDropdown = null; }
       document.removeEventListener('click', closeDropdownOnOutsideClick);
+      window.removeEventListener('scroll', closeDropdown, true);
     }
 
     function closeDropdownOnOutsideClick(e) {
@@ -1040,14 +1041,24 @@
         b.onclick = (e) => { e.stopPropagation(); claimSlot(gameDate, role, fam); };
         dropdown.appendChild(b);
       });
-      // Position dropdown
+      // Position dropdown fixed relative to viewport
       const rect = btn.getBoundingClientRect();
-      dropdown.style.position = 'fixed';
-      dropdown.style.top = (rect.bottom + 4) + 'px';
+      const spaceBelow = window.innerHeight - rect.bottom;
+      const dropdownHeight = Math.min(300, families.length * 44);
+      // If not enough space below, open upward
+      if (spaceBelow < dropdownHeight && rect.top > spaceBelow) {
+        dropdown.style.bottom = (window.innerHeight - rect.top + 4) + 'px';
+      } else {
+        dropdown.style.top = (rect.bottom + 4) + 'px';
+      }
       dropdown.style.left = Math.max(8, Math.min(rect.left, window.innerWidth - 220)) + 'px';
       document.body.appendChild(dropdown);
       activeDropdown = dropdown;
-      setTimeout(() => document.addEventListener('click', closeDropdownOnOutsideClick), 10);
+      // Close on scroll or outside click
+      setTimeout(() => {
+        document.addEventListener('click', closeDropdownOnOutsideClick);
+        window.addEventListener('scroll', closeDropdown, true);
+      }, 10);
     }
 
     function renderSnacks() {
