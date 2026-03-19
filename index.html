@@ -736,7 +736,7 @@
 
     const families = [
       'Garrett', 'Hardy', 'Jewett', 'Jones', 'Kelly', 'Krumsieg', 'Lindquist',
-      'Lorier', 'Martin', 'Oslund (J.)', 'Oslund (O.)', 'Tovsen', 'Waterman'
+      'Lorier', 'Martin', 'Oslund (JJ)', 'Oslund (Zach)', 'Tovsen', 'Waterman'
     ];
 
     // ===== MOBILE NAV =====
@@ -761,7 +761,7 @@
         const daysUntilThursday = (4 - day + 7) % 7 || 7;
         d.setDate(d.getDate() + daysUntilThursday);
         d.setHours(17, 0, 0, 0);
-        if (d > now && d <= new Date('2026-06-13')) nextPractice = d;
+        if (d > now && d <= new Date('2026-06-13T23:59:59')) nextPractice = d;
       }
 
       // Find next game
@@ -927,8 +927,8 @@
     function downloadPracticesICS() {
       // Thursdays 5-6pm starting April 9, skip bye weeks, end after last game (Jun 13)
       const practiceEvents = [];
-      const start = new Date('2026-04-09');
-      const end = new Date('2026-06-13');
+      const start = new Date('2026-04-09T12:00:00');
+      const end = new Date('2026-06-13T12:00:00');
       const d = new Date(start);
       let week = 0;
       while (d <= end) {
