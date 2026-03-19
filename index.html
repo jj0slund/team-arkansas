@@ -46,7 +46,8 @@
   </script>
   <style>
     * { scroll-behavior: smooth; }
-    body { font-family: 'Nunito', sans-serif; }
+    html, body { font-family: 'Nunito', sans-serif; overflow-x: hidden; }
+    body { position: relative; width: 100%; }
     section[id] { scroll-margin-top: 60px; }
 
     /* Grass stripe background */
@@ -110,6 +111,11 @@
       .no-print { display: none !important; }
       .grass-bg { background: white !important; }
     }
+
+    /* Past games collapsible */
+    details summary { list-style: none; }
+    details summary::-webkit-details-marker { display: none; }
+    details[open] .past-games-arrow { transform: rotate(90deg); }
 
     /* Dropdown styling */
     .family-dropdown {
@@ -205,7 +211,7 @@
       <p class="mt-6 text-sm opacity-75">Season: April 9 &ndash; June 13, 2026</p>
     </div>
     <!-- Grass edge -->
-    <svg class="absolute bottom-0 w-full" viewBox="0 0 1440 60" preserveAspectRatio="none">
+    <svg class="absolute bottom-0 left-0 right-0 w-full" style="display:block" viewBox="0 0 1440 60" preserveAspectRatio="none">
       <path d="M0,60 L0,30 Q60,0 120,30 Q180,60 240,30 Q300,0 360,30 Q420,60 480,30 Q540,0 600,30 Q660,60 720,30 Q780,0 840,30 Q900,60 960,30 Q1020,0 1080,30 Q1140,60 1200,30 Q1260,0 1320,30 Q1380,60 1440,30 L1440,60 Z" fill="#fefae0"/>
     </svg>
   </section>
@@ -606,8 +612,8 @@
   </section>
 
   <!-- FOOTER -->
-  <footer class="grass-bg text-white py-10 px-4 relative">
-    <svg class="absolute top-0 w-full -mt-px" viewBox="0 0 1440 60" preserveAspectRatio="none">
+  <footer class="grass-bg text-white py-10 px-4 relative overflow-hidden">
+    <svg class="absolute top-0 left-0 right-0 w-full -mt-px" style="display:block" viewBox="0 0 1440 60" preserveAspectRatio="none">
       <path d="M0,0 L0,30 Q60,60 120,30 Q180,0 240,30 Q300,60 360,30 Q420,0 480,30 Q540,60 600,30 Q660,0 720,30 Q780,60 840,30 Q900,0 960,30 Q1020,60 1080,30 Q1140,0 1200,30 Q1260,60 1320,30 Q1380,0 1440,30 L1440,0 Z" fill="white"/>
     </svg>
     <div class="max-w-4xl mx-auto text-center pt-6">
@@ -1037,7 +1043,9 @@
       const container = document.getElementById('mobile-schedule-cards');
       if (!container) return;
       const dateFormatter = new Intl.DateTimeFormat('en-US', { weekday: 'short', month: 'short', day: 'numeric' });
-      let html = '';
+      const now = new Date();
+      const pastCards = [];
+      const upcomingCards = [];
 
       games.forEach((g, i) => {
         const d = new Date(g.date + 'T12:00:00');
@@ -1048,44 +1056,79 @@
         const drinkKey = `${g.date}-drinks`;
         const snackClaimed = snackData[snackKey];
         const drinkClaimed = snackData[drinkKey];
+        // Game is past if it's the day after game day
+        const gameEnd = new Date(g.date + 'T23:59:59');
+        const isPast = now > gameEnd;
 
-        html += `<div class="bg-white rounded-xl shadow-md p-4 border-l-4 ${borderColor}">`;
+        let card = '';
+        card += `<div class="bg-white rounded-xl shadow-md p-3 border-l-4 ${borderColor}${isPast ? ' opacity-60' : ''}">`;
 
-        // Top row: date/time left, calendar button right
-        html += `<div class="flex justify-between items-start">`;
-        html += `<div>`;
-        html += `<div class="font-fun text-lg font-bold text-field-dark">${dateStr} &bull; ${g.time}</div>`;
-        html += `<div class="text-xs text-gray-500 mt-0.5">vs ${g.opponent} &bull; Field ${g.field}</div>`;
-        html += `<span class="${jerseyClass} px-2 py-0.5 rounded-full text-xs font-bold mt-1 inline-block">${g.jersey.toUpperCase()}</span>`;
-        html += `</div>`;
-        html += `<button onclick="downloadICS('${g.date}','${g.rawTime}','${g.opponent}','${g.field}','${g.jersey}')" class="text-xs text-field-light font-semibold whitespace-nowrap">&#128197; Add to Cal</button>`;
-        html += `</div>`;
+        // Single row layout: left info, right snack status + calendar
+        card += `<div class="flex justify-between items-center gap-2">`;
 
-        // Bottom row: snack/drink status on far right
-        html += `<div class="flex justify-end mt-2">`;
+        // Left: game info
+        card += `<div class="flex-1 min-w-0">`;
+        card += `<div class="font-fun text-base font-bold text-field-dark leading-tight">${dateStr} &bull; ${g.time}</div>`;
+        card += `<div class="flex items-center gap-2 mt-1">`;
+        card += `<span class="text-xs text-gray-500">vs ${g.opponent}</span>`;
+        card += `<span class="text-xs text-gray-400">&bull;</span>`;
+        card += `<span class="text-xs text-gray-500">Field ${g.field}</span>`;
+        card += `<span class="${jerseyClass} px-1.5 py-0.5 rounded-full text-xs font-bold leading-none">${g.jersey.toUpperCase()}</span>`;
+        card += `</div>`;
+        card += `</div>`;
 
-        // Right side: snack & drink status stacked (tappable)
-        html += `<div class="flex flex-col items-end gap-1 text-xs">`;
+        // Right: snack/drink badges stacked + calendar
+        card += `<div class="flex flex-col items-end gap-1 shrink-0">`;
+        card += `<button onclick="downloadICS('${g.date}','${g.rawTime}','${g.opponent}','${g.field}','${g.jersey}')" class="text-xs text-field-light font-semibold whitespace-nowrap mb-0.5">&#128197; Add to Cal</button>`;
         if (snackClaimed) {
-          html += `<button onclick="showFamilyDropdown(this,'${g.date}','snacks')" class="inline-flex items-center gap-1 bg-green-100 text-green-800 px-2 py-0.5 rounded-full font-semibold cursor-pointer">&#127818; ${snackClaimed}</button>`;
+          card += `<button onclick="showFamilyDropdown(this,'${g.date}','snacks')" class="inline-flex items-center gap-1 bg-green-100 text-green-800 px-2 py-0.5 rounded-full font-semibold text-xs">&#127818; ${snackClaimed}</button>`;
         } else {
-          html += `<button onclick="showFamilyDropdown(this,'${g.date}','snacks')" class="inline-flex items-center gap-1 bg-orange-50 text-orange-500 px-2 py-0.5 rounded-full font-semibold border border-dashed border-orange-300 cursor-pointer">&#127818; Needed</button>`;
+          card += `<button onclick="showFamilyDropdown(this,'${g.date}','snacks')" class="inline-flex items-center gap-1 bg-orange-50 text-orange-500 px-2 py-0.5 rounded-full font-semibold border border-dashed border-orange-300 text-xs">&#127818; Needed</button>`;
         }
         if (drinkClaimed) {
-          html += `<button onclick="showFamilyDropdown(this,'${g.date}','drinks')" class="inline-flex items-center gap-1 bg-blue-100 text-blue-800 px-2 py-0.5 rounded-full font-semibold cursor-pointer">&#129475; ${drinkClaimed}</button>`;
+          card += `<button onclick="showFamilyDropdown(this,'${g.date}','drinks')" class="inline-flex items-center gap-1 bg-blue-100 text-blue-800 px-2 py-0.5 rounded-full font-semibold text-xs">&#129475; ${drinkClaimed}</button>`;
         } else {
-          html += `<button onclick="showFamilyDropdown(this,'${g.date}','drinks')" class="inline-flex items-center gap-1 bg-blue-50 text-blue-400 px-2 py-0.5 rounded-full font-semibold border border-dashed border-blue-300 cursor-pointer">&#129475; Needed</button>`;
+          card += `<button onclick="showFamilyDropdown(this,'${g.date}','drinks')" class="inline-flex items-center gap-1 bg-blue-50 text-blue-400 px-2 py-0.5 rounded-full font-semibold border border-dashed border-blue-300 text-xs">&#129475; Needed</button>`;
         }
-        html += `</div>`;
+        card += `</div>`;
 
-        html += `</div>`;
-        html += `</div>`;
+        card += `</div>`;
+        card += `</div>`;
 
-        // Insert bye week card after week 4
+        if (isPast) {
+          pastCards.push(card);
+        } else {
+          upcomingCards.push(card);
+        }
+
+        // Bye week card after week 4
         if (g.week === 4) {
-          html += `<div class="bg-gold/20 rounded-xl p-4 text-center text-gray-500"><em>&#127796; BYE &mdash; May 16 &amp; May 23</em></div>`;
+          const byeCard = `<div class="bg-gold/20 rounded-xl p-3 text-center text-gray-500 text-sm"><em>&#127796; BYE &mdash; May 16 &amp; May 23</em></div>`;
+          const byeIsPast = now > new Date('2026-05-23T23:59:59');
+          if (byeIsPast) {
+            pastCards.push(byeCard);
+          } else {
+            upcomingCards.push(byeCard);
+          }
         }
       });
+
+      let html = '';
+
+      // Past games collapsible (only show if there are past games)
+      if (pastCards.length > 0) {
+        html += `<details class="mb-2">`;
+        html += `<summary class="bg-gray-100 rounded-xl px-4 py-3 text-sm font-semibold text-gray-500 cursor-pointer flex items-center gap-2 select-none">`;
+        html += `<span class="transition-transform inline-block text-xs past-games-arrow">&#9654;</span> Past Games (${pastCards.length})`;
+        html += `</summary>`;
+        html += `<div class="space-y-2 mt-2">`;
+        html += pastCards.join('');
+        html += `</div>`;
+        html += `</details>`;
+      }
+
+      // Upcoming games
+      html += upcomingCards.join('');
 
       container.innerHTML = html;
     }
