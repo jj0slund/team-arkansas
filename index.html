@@ -119,9 +119,10 @@
       border-radius: 12px;
       box-shadow: 0 10px 25px rgba(0,0,0,0.2);
       z-index: 200;
-      max-height: 300px;
+      max-height: 60vh;
       overflow-y: auto;
       min-width: 200px;
+      -webkit-overflow-scrolling: touch;
     }
     .family-dropdown button {
       display: block;
@@ -1024,10 +1025,13 @@
     function closeDropdown() {
       if (activeDropdown) { activeDropdown.remove(); activeDropdown = null; }
       document.removeEventListener('click', closeDropdownOnOutsideClick);
-      window.removeEventListener('scroll', closeDropdown, true);
+      window.removeEventListener('scroll', closeDropdownOnScroll, true);
     }
 
     function closeDropdownOnOutsideClick(e) {
+      if (activeDropdown && !activeDropdown.contains(e.target)) closeDropdown();
+    }
+    function closeDropdownOnScroll(e) {
       if (activeDropdown && !activeDropdown.contains(e.target)) closeDropdown();
     }
 
@@ -1057,7 +1061,7 @@
       // Close on scroll or outside click
       setTimeout(() => {
         document.addEventListener('click', closeDropdownOnOutsideClick);
-        window.addEventListener('scroll', closeDropdown, true);
+        window.addEventListener('scroll', closeDropdownOnScroll, true);
       }, 10);
     }
 
