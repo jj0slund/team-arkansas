@@ -202,8 +202,9 @@
       </h2>
       <p class="text-center text-gray-600 mb-8">All games at <strong>Seven Gables Park</strong> &bull; 1750 Naperville Rd, Wheaton</p>
 
-      <div class="overflow-x-auto rounded-2xl shadow-lg">
-        <table class="w-full text-sm md:text-base">
+      <!-- Desktop table -->
+      <div class="hidden md:block overflow-x-auto rounded-2xl shadow-lg">
+        <table class="w-full text-base">
           <thead>
             <tr class="bg-field-dark text-white font-fun text-base">
               <th class="px-3 py-3 text-left">Week</th>
@@ -216,81 +217,122 @@
             </tr>
           </thead>
           <tbody>
-            <tr class="bg-white border-b hover:bg-green-50 transition">
-              <td class="px-3 py-3 font-bold">1</td>
-              <td class="px-3 py-3">Sat, Apr 18</td>
-              <td class="px-3 py-3">1:30 PM</td>
-              <td class="px-3 py-3">A1</td>
-              <td class="px-3 py-3 font-semibold">vs Wyoming</td>
-              <td class="px-3 py-3 text-center"><span class="jersey-white px-3 py-1 rounded-full text-xs font-bold">WHITE</span></td>
-              <td class="px-3 py-3 text-center no-print"><button onclick="downloadICS('2026-04-18','13:30','Wyoming','A1','White')" class="text-field hover:text-cardinal transition" title="Add to Calendar">&#128197;+</button></td>
-            </tr>
-            <tr class="bg-green-50 border-b hover:bg-green-100 transition">
-              <td class="px-3 py-3 font-bold">2</td>
-              <td class="px-3 py-3">Sat, Apr 25</td>
-              <td class="px-3 py-3">12:00 PM</td>
-              <td class="px-3 py-3">A1</td>
-              <td class="px-3 py-3 font-semibold">vs Nevada</td>
-              <td class="px-3 py-3 text-center"><span class="jersey-blue px-3 py-1 rounded-full text-xs font-bold">BLUE</span></td>
-              <td class="px-3 py-3 text-center no-print"><button onclick="downloadICS('2026-04-25','12:00','Nevada','A1','Blue')" class="text-field hover:text-cardinal transition" title="Add to Calendar">&#128197;+</button></td>
-            </tr>
-            <tr class="bg-white border-b hover:bg-green-50 transition">
-              <td class="px-3 py-3 font-bold">3</td>
-              <td class="px-3 py-3">Sat, May 2</td>
-              <td class="px-3 py-3">9:00 AM</td>
-              <td class="px-3 py-3">A2</td>
-              <td class="px-3 py-3 font-semibold">vs Texas</td>
-              <td class="px-3 py-3 text-center"><span class="jersey-blue px-3 py-1 rounded-full text-xs font-bold">BLUE</span></td>
-              <td class="px-3 py-3 text-center no-print"><button onclick="downloadICS('2026-05-02','09:00','Texas','A2','Blue')" class="text-field hover:text-cardinal transition" title="Add to Calendar">&#128197;+</button></td>
-            </tr>
-            <tr class="bg-green-50 border-b hover:bg-green-100 transition">
-              <td class="px-3 py-3 font-bold">4</td>
-              <td class="px-3 py-3">Sat, May 9</td>
-              <td class="px-3 py-3">10:30 AM</td>
-              <td class="px-3 py-3">A2</td>
-              <td class="px-3 py-3 font-semibold">vs New Hampshire</td>
-              <td class="px-3 py-3 text-center"><span class="jersey-white px-3 py-1 rounded-full text-xs font-bold">WHITE</span></td>
-              <td class="px-3 py-3 text-center no-print"><button onclick="downloadICS('2026-05-09','10:30','New Hampshire','A2','White')" class="text-field hover:text-cardinal transition" title="Add to Calendar">&#128197;+</button></td>
-            </tr>
-            <tr class="bg-gold/20 border-b">
-              <td class="px-3 py-3 font-bold">5</td>
-              <td class="px-3 py-3">Sat, May 16</td>
-              <td class="px-3 py-3 text-gray-500" colspan="5"><em>&#127796; BYE WEEK &mdash; Enjoy the weekend!</em></td>
-            </tr>
-            <tr class="bg-gold/20 border-b">
-              <td class="px-3 py-3 font-bold">6</td>
-              <td class="px-3 py-3">Sat, May 23</td>
-              <td class="px-3 py-3 text-gray-500" colspan="5"><em>&#127796; BYE WEEK &mdash; Memorial Day Weekend</em></td>
-            </tr>
-            <tr class="bg-white border-b hover:bg-green-50 transition">
-              <td class="px-3 py-3 font-bold">7</td>
-              <td class="px-3 py-3">Sat, May 30</td>
-              <td class="px-3 py-3">9:00 AM</td>
-              <td class="px-3 py-3">A1</td>
-              <td class="px-3 py-3 font-semibold">vs South Dakota</td>
-              <td class="px-3 py-3 text-center"><span class="jersey-blue px-3 py-1 rounded-full text-xs font-bold">BLUE</span></td>
-              <td class="px-3 py-3 text-center no-print"><button onclick="downloadICS('2026-05-30','09:00','South Dakota','A1','Blue')" class="text-field hover:text-cardinal transition" title="Add to Calendar">&#128197;+</button></td>
-            </tr>
-            <tr class="bg-green-50 border-b hover:bg-green-100 transition">
-              <td class="px-3 py-3 font-bold">8</td>
-              <td class="px-3 py-3">Sat, Jun 6</td>
-              <td class="px-3 py-3">1:30 PM</td>
-              <td class="px-3 py-3">A1</td>
-              <td class="px-3 py-3 font-semibold">vs Connecticut</td>
-              <td class="px-3 py-3 text-center"><span class="jersey-blue px-3 py-1 rounded-full text-xs font-bold">BLUE</span></td>
-              <td class="px-3 py-3 text-center no-print"><button onclick="downloadICS('2026-06-06','13:30','Connecticut','A1','Blue')" class="text-field hover:text-cardinal transition" title="Add to Calendar">&#128197;+</button></td>
-            </tr>
-            <tr class="bg-white hover:bg-green-50 transition">
-              <td class="px-3 py-3 font-bold">9</td>
-              <td class="px-3 py-3">Sat, Jun 13</td>
-              <td class="px-3 py-3">12:00 PM</td>
-              <td class="px-3 py-3">A2</td>
-              <td class="px-3 py-3 font-semibold">vs Missouri</td>
-              <td class="px-3 py-3 text-center"><span class="jersey-white px-3 py-1 rounded-full text-xs font-bold">WHITE</span></td>
-              <td class="px-3 py-3 text-center no-print"><button onclick="downloadICS('2026-06-13','12:00','Missouri','A2','White')" class="text-field hover:text-cardinal transition" title="Add to Calendar">&#128197;+</button></td>
-            </tr>
+            <tr class="bg-white border-b hover:bg-green-50 transition"><td class="px-3 py-3 font-bold">1</td><td class="px-3 py-3">Sat, Apr 18</td><td class="px-3 py-3">1:30 PM</td><td class="px-3 py-3">A1</td><td class="px-3 py-3 font-semibold">vs Wyoming</td><td class="px-3 py-3 text-center"><span class="jersey-white px-3 py-1 rounded-full text-xs font-bold">WHITE</span></td><td class="px-3 py-3 text-center no-print"><button onclick="downloadICS('2026-04-18','13:30','Wyoming','A1','White')" class="text-field hover:text-cardinal transition" title="Add to Calendar">&#128197;+</button></td></tr>
+            <tr class="bg-green-50 border-b hover:bg-green-100 transition"><td class="px-3 py-3 font-bold">2</td><td class="px-3 py-3">Sat, Apr 25</td><td class="px-3 py-3">12:00 PM</td><td class="px-3 py-3">A1</td><td class="px-3 py-3 font-semibold">vs Nevada</td><td class="px-3 py-3 text-center"><span class="jersey-blue px-3 py-1 rounded-full text-xs font-bold">BLUE</span></td><td class="px-3 py-3 text-center no-print"><button onclick="downloadICS('2026-04-25','12:00','Nevada','A1','Blue')" class="text-field hover:text-cardinal transition" title="Add to Calendar">&#128197;+</button></td></tr>
+            <tr class="bg-white border-b hover:bg-green-50 transition"><td class="px-3 py-3 font-bold">3</td><td class="px-3 py-3">Sat, May 2</td><td class="px-3 py-3">9:00 AM</td><td class="px-3 py-3">A2</td><td class="px-3 py-3 font-semibold">vs Texas</td><td class="px-3 py-3 text-center"><span class="jersey-blue px-3 py-1 rounded-full text-xs font-bold">BLUE</span></td><td class="px-3 py-3 text-center no-print"><button onclick="downloadICS('2026-05-02','09:00','Texas','A2','Blue')" class="text-field hover:text-cardinal transition" title="Add to Calendar">&#128197;+</button></td></tr>
+            <tr class="bg-green-50 border-b hover:bg-green-100 transition"><td class="px-3 py-3 font-bold">4</td><td class="px-3 py-3">Sat, May 9</td><td class="px-3 py-3">10:30 AM</td><td class="px-3 py-3">A2</td><td class="px-3 py-3 font-semibold">vs New Hampshire</td><td class="px-3 py-3 text-center"><span class="jersey-white px-3 py-1 rounded-full text-xs font-bold">WHITE</span></td><td class="px-3 py-3 text-center no-print"><button onclick="downloadICS('2026-05-09','10:30','New Hampshire','A2','White')" class="text-field hover:text-cardinal transition" title="Add to Calendar">&#128197;+</button></td></tr>
+            <tr class="bg-gold/20 border-b"><td class="px-3 py-3 font-bold">5</td><td class="px-3 py-3">Sat, May 16</td><td class="px-3 py-3 text-gray-500" colspan="5"><em>&#127796; BYE WEEK &mdash; Enjoy the weekend!</em></td></tr>
+            <tr class="bg-gold/20 border-b"><td class="px-3 py-3 font-bold">6</td><td class="px-3 py-3">Sat, May 23</td><td class="px-3 py-3 text-gray-500" colspan="5"><em>&#127796; BYE WEEK &mdash; Memorial Day Weekend</em></td></tr>
+            <tr class="bg-white border-b hover:bg-green-50 transition"><td class="px-3 py-3 font-bold">7</td><td class="px-3 py-3">Sat, May 30</td><td class="px-3 py-3">9:00 AM</td><td class="px-3 py-3">A1</td><td class="px-3 py-3 font-semibold">vs South Dakota</td><td class="px-3 py-3 text-center"><span class="jersey-blue px-3 py-1 rounded-full text-xs font-bold">BLUE</span></td><td class="px-3 py-3 text-center no-print"><button onclick="downloadICS('2026-05-30','09:00','South Dakota','A1','Blue')" class="text-field hover:text-cardinal transition" title="Add to Calendar">&#128197;+</button></td></tr>
+            <tr class="bg-green-50 border-b hover:bg-green-100 transition"><td class="px-3 py-3 font-bold">8</td><td class="px-3 py-3">Sat, Jun 6</td><td class="px-3 py-3">1:30 PM</td><td class="px-3 py-3">A1</td><td class="px-3 py-3 font-semibold">vs Connecticut</td><td class="px-3 py-3 text-center"><span class="jersey-blue px-3 py-1 rounded-full text-xs font-bold">BLUE</span></td><td class="px-3 py-3 text-center no-print"><button onclick="downloadICS('2026-06-06','13:30','Connecticut','A1','Blue')" class="text-field hover:text-cardinal transition" title="Add to Calendar">&#128197;+</button></td></tr>
+            <tr class="bg-white hover:bg-green-50 transition"><td class="px-3 py-3 font-bold">9</td><td class="px-3 py-3">Sat, Jun 13</td><td class="px-3 py-3">12:00 PM</td><td class="px-3 py-3">A2</td><td class="px-3 py-3 font-semibold">vs Missouri</td><td class="px-3 py-3 text-center"><span class="jersey-white px-3 py-1 rounded-full text-xs font-bold">WHITE</span></td><td class="px-3 py-3 text-center no-print"><button onclick="downloadICS('2026-06-13','12:00','Missouri','A2','White')" class="text-field hover:text-cardinal transition" title="Add to Calendar">&#128197;+</button></td></tr>
           </tbody>
         </table>
+      </div>
+
+      <!-- Mobile cards -->
+      <div class="md:hidden space-y-3">
+        <div class="bg-white rounded-xl shadow-md p-4 border-l-4 border-white">
+          <div class="flex justify-between items-start">
+            <div>
+              <div class="font-fun text-lg font-bold text-field-dark">vs Wyoming</div>
+              <div class="text-sm text-gray-600 mt-1">Sat, Apr 18 &bull; 1:30 PM</div>
+              <div class="text-sm text-gray-500">Field A1</div>
+            </div>
+            <div class="text-right">
+              <span class="jersey-white px-3 py-1 rounded-full text-xs font-bold">WHITE</span>
+              <div class="text-xs text-gray-400 mt-1">Week 1</div>
+            </div>
+          </div>
+          <button onclick="downloadICS('2026-04-18','13:30','Wyoming','A1','White')" class="mt-2 text-xs text-field-light font-semibold">&#128197; Add to Calendar</button>
+        </div>
+        <div class="bg-white rounded-xl shadow-md p-4 border-l-4 border-blue-600">
+          <div class="flex justify-between items-start">
+            <div>
+              <div class="font-fun text-lg font-bold text-field-dark">vs Nevada</div>
+              <div class="text-sm text-gray-600 mt-1">Sat, Apr 25 &bull; 12:00 PM</div>
+              <div class="text-sm text-gray-500">Field A1</div>
+            </div>
+            <div class="text-right">
+              <span class="jersey-blue px-3 py-1 rounded-full text-xs font-bold">BLUE</span>
+              <div class="text-xs text-gray-400 mt-1">Week 2</div>
+            </div>
+          </div>
+          <button onclick="downloadICS('2026-04-25','12:00','Nevada','A1','Blue')" class="mt-2 text-xs text-field-light font-semibold">&#128197; Add to Calendar</button>
+        </div>
+        <div class="bg-white rounded-xl shadow-md p-4 border-l-4 border-blue-600">
+          <div class="flex justify-between items-start">
+            <div>
+              <div class="font-fun text-lg font-bold text-field-dark">vs Texas</div>
+              <div class="text-sm text-gray-600 mt-1">Sat, May 2 &bull; 9:00 AM</div>
+              <div class="text-sm text-gray-500">Field A2</div>
+            </div>
+            <div class="text-right">
+              <span class="jersey-blue px-3 py-1 rounded-full text-xs font-bold">BLUE</span>
+              <div class="text-xs text-gray-400 mt-1">Week 3</div>
+            </div>
+          </div>
+          <button onclick="downloadICS('2026-05-02','09:00','Texas','A2','Blue')" class="mt-2 text-xs text-field-light font-semibold">&#128197; Add to Calendar</button>
+        </div>
+        <div class="bg-white rounded-xl shadow-md p-4 border-l-4 border-white">
+          <div class="flex justify-between items-start">
+            <div>
+              <div class="font-fun text-lg font-bold text-field-dark">vs New Hampshire</div>
+              <div class="text-sm text-gray-600 mt-1">Sat, May 9 &bull; 10:30 AM</div>
+              <div class="text-sm text-gray-500">Field A2</div>
+            </div>
+            <div class="text-right">
+              <span class="jersey-white px-3 py-1 rounded-full text-xs font-bold">WHITE</span>
+              <div class="text-xs text-gray-400 mt-1">Week 4</div>
+            </div>
+          </div>
+          <button onclick="downloadICS('2026-05-09','10:30','New Hampshire','A2','White')" class="mt-2 text-xs text-field-light font-semibold">&#128197; Add to Calendar</button>
+        </div>
+        <div class="bg-gold/20 rounded-xl p-4 text-center text-gray-500">
+          <em>&#127796; BYE &mdash; May 16 &amp; May 23</em>
+        </div>
+        <div class="bg-white rounded-xl shadow-md p-4 border-l-4 border-blue-600">
+          <div class="flex justify-between items-start">
+            <div>
+              <div class="font-fun text-lg font-bold text-field-dark">vs South Dakota</div>
+              <div class="text-sm text-gray-600 mt-1">Sat, May 30 &bull; 9:00 AM</div>
+              <div class="text-sm text-gray-500">Field A1</div>
+            </div>
+            <div class="text-right">
+              <span class="jersey-blue px-3 py-1 rounded-full text-xs font-bold">BLUE</span>
+              <div class="text-xs text-gray-400 mt-1">Week 7</div>
+            </div>
+          </div>
+          <button onclick="downloadICS('2026-05-30','09:00','South Dakota','A1','Blue')" class="mt-2 text-xs text-field-light font-semibold">&#128197; Add to Calendar</button>
+        </div>
+        <div class="bg-white rounded-xl shadow-md p-4 border-l-4 border-blue-600">
+          <div class="flex justify-between items-start">
+            <div>
+              <div class="font-fun text-lg font-bold text-field-dark">vs Connecticut</div>
+              <div class="text-sm text-gray-600 mt-1">Sat, Jun 6 &bull; 1:30 PM</div>
+              <div class="text-sm text-gray-500">Field A1</div>
+            </div>
+            <div class="text-right">
+              <span class="jersey-blue px-3 py-1 rounded-full text-xs font-bold">BLUE</span>
+              <div class="text-xs text-gray-400 mt-1">Week 8</div>
+            </div>
+          </div>
+          <button onclick="downloadICS('2026-06-06','13:30','Connecticut','A1','Blue')" class="mt-2 text-xs text-field-light font-semibold">&#128197; Add to Calendar</button>
+        </div>
+        <div class="bg-white rounded-xl shadow-md p-4 border-l-4 border-white">
+          <div class="flex justify-between items-start">
+            <div>
+              <div class="font-fun text-lg font-bold text-field-dark">vs Missouri</div>
+              <div class="text-sm text-gray-600 mt-1">Sat, Jun 13 &bull; 12:00 PM</div>
+              <div class="text-sm text-gray-500">Field A2</div>
+            </div>
+            <div class="text-right">
+              <span class="jersey-white px-3 py-1 rounded-full text-xs font-bold">WHITE</span>
+              <div class="text-xs text-gray-400 mt-1">Week 9</div>
+            </div>
+          </div>
+          <button onclick="downloadICS('2026-06-13','12:00','Missouri','A2','White')" class="mt-2 text-xs text-field-light font-semibold">&#128197; Add to Calendar</button>
+        </div>
       </div>
 
       <div class="flex flex-wrap gap-3 justify-center mt-6 no-print">
@@ -336,6 +378,11 @@
             <strong>&#9888;&#65039; Weather Note:</strong> If rain or storms are in the forecast, check your email for updates. We'll make a call by 3 PM.
             Check <a href="https://www.rainoutline.com/search.aspx?s=wheaton+park+district" target="_blank" class="text-cardinal font-bold underline">RainoutLine</a> for field closures.
           </div>
+          <div class="mt-4 text-center no-print">
+            <button onclick="downloadPracticesICS()" class="bg-field-dark hover:bg-field text-white font-bold py-2 px-5 rounded-full shadow-md transition text-sm flex items-center gap-2 mx-auto">
+              <span>&#128197;</span> Add All Practices to Calendar
+            </button>
+          </div>
         </div>
         <div class="rounded-2xl overflow-hidden shadow-lg">
           <iframe
@@ -379,109 +426,145 @@
       <h2 class="font-fun text-4xl md:text-5xl font-bold text-field-dark text-center mb-8">
         &#129349; Team Roster
       </h2>
-      <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
-        <!-- Players -->
-        <div class="bg-gradient-to-br from-green-50 to-white rounded-xl p-4 shadow text-center border-2 border-green-100 hover:border-field transition">
-          <div class="text-3xl mb-1">&#9917;</div>
-          <div class="font-fun font-bold text-field-dark">Abel Hardy</div>
-          <div class="text-xs text-gray-500">Parent: Eaden</div>
-        </div>
-        <div class="bg-gradient-to-br from-green-50 to-white rounded-xl p-4 shadow text-center border-2 border-green-100 hover:border-field transition">
-          <div class="text-3xl mb-1">&#9917;</div>
-          <div class="font-fun font-bold text-field-dark">Norris Hardy</div>
-          <div class="text-xs text-gray-500">Parent: Eaden</div>
-        </div>
-        <div class="bg-gradient-to-br from-green-50 to-white rounded-xl p-4 shadow text-center border-2 border-green-100 hover:border-field transition">
-          <div class="text-3xl mb-1">&#9917;</div>
-          <div class="font-fun font-bold text-field-dark">James Jewett</div>
-          <div class="text-xs text-gray-500">Parent: Meghan</div>
-        </div>
-        <div class="bg-gradient-to-br from-green-50 to-white rounded-xl p-4 shadow text-center border-2 border-green-100 hover:border-field transition">
-          <div class="text-3xl mb-1">&#9917;</div>
-          <div class="font-fun font-bold text-field-dark">Fern Jones</div>
-          <div class="text-xs text-gray-500">Parent: Kylie</div>
-        </div>
-        <div class="bg-gradient-to-br from-green-50 to-white rounded-xl p-4 shadow text-center border-2 border-green-100 hover:border-field transition">
-          <div class="text-3xl mb-1">&#9917;</div>
-          <div class="font-fun font-bold text-field-dark">Tre Jones</div>
-          <div class="text-xs text-gray-500">Parent: Kylie</div>
-        </div>
-        <div class="bg-gradient-to-br from-green-50 to-white rounded-xl p-4 shadow text-center border-2 border-green-100 hover:border-field transition">
-          <div class="text-3xl mb-1">&#9917;</div>
-          <div class="font-fun font-bold text-field-dark">Adelaide Kelly</div>
-          <div class="text-xs text-gray-500">Parent: Brian</div>
-        </div>
-        <div class="bg-gradient-to-br from-green-50 to-white rounded-xl p-4 shadow text-center border-2 border-green-100 hover:border-field transition">
-          <div class="text-3xl mb-1">&#9917;</div>
-          <div class="font-fun font-bold text-field-dark">Hudson Krumsieg</div>
-          <div class="text-xs text-gray-500">Parent: Caleb</div>
-        </div>
-        <div class="bg-gradient-to-br from-green-50 to-white rounded-xl p-4 shadow text-center border-2 border-green-100 hover:border-field transition">
-          <div class="text-3xl mb-1">&#9917;</div>
-          <div class="font-fun font-bold text-field-dark">Thomas Lindquist</div>
-          <div class="text-xs text-gray-500">Parent: Elise</div>
-        </div>
-        <div class="bg-gradient-to-br from-green-50 to-white rounded-xl p-4 shadow text-center border-2 border-green-100 hover:border-field transition">
-          <div class="text-3xl mb-1">&#9917;</div>
-          <div class="font-fun font-bold text-field-dark">Henry Lorier</div>
-          <div class="text-xs text-gray-500">Parent: Meghan</div>
-        </div>
-        <div class="bg-gradient-to-br from-green-50 to-white rounded-xl p-4 shadow text-center border-2 border-green-100 hover:border-field transition">
-          <div class="text-3xl mb-1">&#9917;</div>
-          <div class="font-fun font-bold text-field-dark">James Martin</div>
-          <div class="text-xs text-gray-500">Parent: Kayla</div>
-        </div>
-        <div class="bg-gradient-to-br from-green-50 to-white rounded-xl p-4 shadow text-center border-2 border-green-100 hover:border-field transition">
-          <div class="text-3xl mb-1">&#9917;</div>
-          <div class="font-fun font-bold text-field-dark">Levi Martin</div>
-          <div class="text-xs text-gray-500">Parent: Kayla</div>
-        </div>
-        <div class="bg-gradient-to-br from-green-50 to-white rounded-xl p-4 shadow text-center border-2 border-green-100 hover:border-field transition">
-          <div class="text-3xl mb-1">&#9917;</div>
-          <div class="font-fun font-bold text-field-dark">Owen Oslund</div>
-          <div class="text-xs text-gray-500">Parent: Jonathan</div>
-        </div>
-        <div class="bg-gradient-to-br from-green-50 to-white rounded-xl p-4 shadow text-center border-2 border-green-100 hover:border-field transition">
-          <div class="text-3xl mb-1">&#9917;</div>
-          <div class="font-fun font-bold text-field-dark">Rose Oslund</div>
-          <div class="text-xs text-gray-500">Parent: Olivia</div>
-        </div>
-        <div class="bg-gradient-to-br from-green-50 to-white rounded-xl p-4 shadow text-center border-2 border-green-100 hover:border-field transition">
-          <div class="text-3xl mb-1">&#9917;</div>
-          <div class="font-fun font-bold text-field-dark">Oliver Tovsen</div>
-          <div class="text-xs text-gray-500">Parent: Bridget</div>
-        </div>
-        <div class="bg-gradient-to-br from-green-50 to-white rounded-xl p-4 shadow text-center border-2 border-green-100 hover:border-field transition">
-          <div class="text-3xl mb-1">&#9917;</div>
-          <div class="font-fun font-bold text-field-dark">Lucy Waterman</div>
-          <div class="text-xs text-gray-500">Parent: Faith</div>
-        </div>
-        <div class="bg-gradient-to-br from-green-50 to-white rounded-xl p-4 shadow text-center border-2 border-green-100 hover:border-field transition">
-          <div class="text-3xl mb-1">&#9917;</div>
-          <div class="font-fun font-bold text-field-dark">Wesley Waterman</div>
-          <div class="text-xs text-gray-500">Parent: Faith</div>
-        </div>
-        <div class="bg-gradient-to-br from-green-50 to-white rounded-xl p-4 shadow text-center border-2 border-green-100 hover:border-field transition">
-          <div class="text-3xl mb-1">&#9917;</div>
-          <div class="font-fun font-bold text-field-dark">Ellie Garrett</div>
-          <div class="text-xs text-gray-500">Parent: Kristin</div>
-        </div>
+      <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4" id="roster-grid">
+        <!-- Players rendered by JS -->
       </div>
+      <style>
+        .player-card { perspective: 600px; cursor: pointer; }
+        .player-card:hover .player-avatar { transform: translateY(-4px) scale(1.05); }
+        .player-avatar { transition: transform 0.25s cubic-bezier(.34,1.56,.64,1); }
+        .player-emoji { font-size: 44px; line-height: 1; filter: drop-shadow(0 2px 3px rgba(0,0,0,0.12)); }
+        .player-ring {
+          width: 80px; height: 80px; border-radius: 50%;
+          display: flex; align-items: center; justify-content: center;
+          position: relative; margin: 0 auto;
+        }
+        .bio-overlay {
+          position: fixed; inset: 0; background: rgba(0,0,0,0.4); z-index: 100;
+          display: flex; align-items: center; justify-content: center; padding: 16px;
+          backdrop-filter: blur(4px); opacity: 0; transition: opacity 0.2s;
+        }
+        .bio-overlay.show { opacity: 1; }
+        .bio-card {
+          background: white; border-radius: 20px; padding: 28px 24px; max-width: 320px; width: 100%;
+          text-align: center; box-shadow: 0 20px 60px rgba(0,0,0,0.25);
+          transform: scale(0.9) translateY(20px); transition: transform 0.25s cubic-bezier(.34,1.56,.64,1);
+        }
+        .bio-overlay.show .bio-card { transform: scale(1) translateY(0); }
+        .bio-text { font-size: 14px; color: #4b5563; line-height: 1.6; margin-top: 12px; }
+        .bio-strength { display: inline-block; background: #ecfdf5; color: #059669; font-size: 11px; font-weight: 700; padding: 3px 10px; border-radius: 99px; margin: 3px 2px; }
+      </style>
+      <script>
+        (function() {
+          const players = [
+            { name: 'Abel Hardy', parent: 'Eaden', animal: '🦁', ring: '#fbbf24', bg: 'from-amber-50 to-orange-50', ringBg: '#fef3c7',
+              bio: 'The Lion King of the pitch! Abel brings fearless energy to every play and has a roar that can be heard from the sidelines.', strengths: ['Fearless','Big Energy','Team Leader'] },
+            { name: 'Norris Hardy', parent: 'Eaden', animal: '🐻', ring: '#a16207', bg: 'from-amber-50 to-yellow-50', ringBg: '#fef9c3',
+              bio: 'Strong as a bear and twice as cuddly! Norris never gives up on a play and always has a smile on his face.', strengths: ['Strong','Never Gives Up','Great Attitude'] },
+            { name: 'James Jewett', parent: 'Meghan', animal: '🐯', ring: '#ea580c', bg: 'from-orange-50 to-amber-50', ringBg: '#fff7ed',
+              bio: 'Quick as a tiger and sharp as stripes! James has lightning-fast feet and can change direction on a dime.', strengths: ['Speed Demon','Quick Turns','Sharp Eyes'] },
+            { name: 'Fern Jones', parent: 'Kylie', animal: '🦊', ring: '#dc2626', bg: 'from-red-50 to-orange-50', ringBg: '#fef2f2',
+              bio: 'Sly as a fox with the ball! Fern has sneaky-good footwork and always finds a way through the defense.', strengths: ['Clever Moves','Footwork','Creative'] },
+            { name: 'Tre Jones', parent: 'Kylie', animal: '🐺', ring: '#475569', bg: 'from-slate-50 to-gray-100', ringBg: '#f1f5f9',
+              bio: 'A total pack player! Tre always knows where the team is and makes awesome passes to wide-open teammates.', strengths: ['Team Player','Great Passes','Awareness'] },
+            { name: 'Adelaide Kelly', parent: 'Brian', animal: '🦋', ring: '#7c3aed', bg: 'from-violet-50 to-purple-50', ringBg: '#f5f3ff',
+              bio: 'Graceful like a butterfly on the field! Adelaide floats past defenders with beautiful moves and unstoppable determination.', strengths: ['Graceful','Determined','Beautiful Moves'] },
+            { name: 'Hudson Krumsieg', parent: 'Caleb', animal: '🐸', ring: '#16a34a', bg: 'from-green-50 to-emerald-50', ringBg: '#f0fdf4',
+              bio: 'Leaps into action like a supercharged frog! Hudson can jump, dive, and spring into any play with incredible enthusiasm.', strengths: ['Leaping Saves','Enthusiastic','Springy'] },
+            { name: 'Thomas Lindquist', parent: 'Elise', animal: '🦉', ring: '#78716c', bg: 'from-stone-50 to-amber-50', ringBg: '#fafaf9',
+              bio: 'Wise beyond his years! Thomas reads the game like an owl watching from above and always knows where to be.', strengths: ['Smart Player','Great Positioning','Calm'] },
+            { name: 'Henry Lorier', parent: 'Meghan', animal: '🐧', ring: '#0369a1', bg: 'from-sky-50 to-blue-50', ringBg: '#f0f9ff',
+              bio: 'Cool as ice and smooth on the ball! Henry waddles into the action with an unshakeable chill and killer instincts.', strengths: ['Cool & Calm','Smooth Moves','Clutch'] },
+            { name: 'James Martin', parent: 'Kayla', animal: '🦈', ring: '#0284c7', bg: 'from-cyan-50 to-sky-50', ringBg: '#ecfeff',
+              bio: 'A shark on the field who smells a goal from a mile away! James zooms toward the ball with unstoppable speed.', strengths: ['Goal Sniffer','Fast','Relentless'] },
+            { name: 'Levi Martin', parent: 'Kayla', animal: '🐙', ring: '#be185d', bg: 'from-pink-50 to-rose-50', ringBg: '#fdf2f8',
+              bio: 'Eight arms of awesomeness! Levi seems to be everywhere at once, touching the ball from every angle on the field.', strengths: ['Everywhere','Multi-Tasker','Tricky'] },
+            { name: 'Owen Oslund', parent: 'JJ', animal: '🦅', ring: '#92400e', bg: 'from-amber-50 to-yellow-50', ringBg: '#fffbeb',
+              bio: 'Soars like an eagle and strikes like one too! Owen has an incredible eye for the ball and swoops in at just the right time.', strengths: ['Eagle Eye','Great Timing','Swooper'] },
+            { name: 'Rose Oslund', parent: 'Olivia', animal: '🦩', ring: '#db2777', bg: 'from-pink-50 to-fuchsia-50', ringBg: '#fdf2f8',
+              bio: 'Stands tall and plays with flair! Rose brings style and confidence to every game and isn\'t afraid to show off her moves.', strengths: ['Stylish','Confident','Flair'] },
+            { name: 'Oliver Tovsen', parent: 'Bridget', animal: '🐢', ring: '#15803d', bg: 'from-emerald-50 to-teal-50', ringBg: '#ecfdf5',
+              bio: 'Slow and steady wins the game! Oliver is the rock of the team — always in the right spot with a shell of solid defense.', strengths: ['Rock Solid','Reliable','Great Defense'] },
+            { name: 'Lucy Waterman', parent: 'Faith', animal: '🐬', ring: '#0ea5e9', bg: 'from-sky-50 to-cyan-50', ringBg: '#f0f9ff',
+              bio: 'Dives into every play with dolphin-like joy! Lucy brings infectious happiness and silky-smooth ball control to the team.', strengths: ['Joyful','Smooth Control','Diver'] },
+            { name: 'Wesley Waterman', parent: 'Faith', animal: '🦎', ring: '#65a30d', bg: 'from-lime-50 to-green-50', ringBg: '#f7fee7',
+              bio: 'Quick-change artist on the field! Wesley adapts to any position and can blend into any play like a chameleon superstar.', strengths: ['Adaptable','Versatile','Sneaky Good'] },
+            { name: 'Ellie Garrett', parent: 'Kristin', animal: '🐝', ring: '#d97706', bg: 'from-yellow-50 to-amber-50', ringBg: '#fefce8',
+              bio: 'Busy as a bee and twice as buzzy! Ellie is always on the move, hustling for every ball with tireless sweet energy.', strengths: ['Hustler','Tireless','Buzzy Energy'] },
+          ];
+
+          // Bio popup
+          function showBio(idx) {
+            const p = players[idx];
+            const overlay = document.createElement('div');
+            overlay.className = 'bio-overlay';
+            overlay.innerHTML = `
+              <div class="bio-card">
+                <div style="font-size:56px; margin-bottom:4px;">${p.animal}</div>
+                <div class="font-fun text-xl font-bold text-field-dark">${p.name}</div>
+                <div class="bio-text">${p.bio}</div>
+                <div class="mt-3">${p.strengths.map(s => '<span class="bio-strength">' + s + '</span>').join(' ')}</div>
+                <button onclick="this.closest('.bio-overlay').remove()" class="mt-4 text-xs text-gray-400 hover:text-cardinal font-semibold transition">tap to close</button>
+              </div>`;
+            overlay.addEventListener('click', (e) => { if (e.target === overlay) overlay.remove(); });
+            document.body.appendChild(overlay);
+            requestAnimationFrame(() => overlay.classList.add('show'));
+          }
+          window.showBio = showBio;
+
+          const grid = document.getElementById('roster-grid');
+          grid.innerHTML = players.map((p, i) => {
+            return `
+            <div class="player-card bg-gradient-to-br ${p.bg} rounded-2xl pt-5 pb-4 px-3 shadow-md text-center border border-white/80 hover:shadow-xl" onclick="showBio(${i})">
+              <div class="player-avatar">
+                <div class="player-ring" style="background:${p.ringBg}; border: 3px solid ${p.ring}; box-shadow: 0 4px 12px ${p.ring}33;">
+                  <span class="player-emoji">${p.animal}</span>
+                </div>
+              </div>
+              <div class="font-fun font-bold text-field-dark mt-3 text-sm leading-tight">${p.name}</div>
+              <div class="text-xs text-gray-400 mt-0.5">Parent: ${p.parent}</div>
+            </div>`;
+          }).join('');
+        })();
+      </script>
+
+      <p class="text-center text-xs text-gray-400 mt-6 italic">Player avatars and bios are AI generated and may or may not reflect each kid's playing styles &#128521;</p>
 
       <!-- Coaches -->
-      <div class="mt-10 grid sm:grid-cols-2 gap-4 max-w-lg mx-auto">
+      <div class="mt-8 grid sm:grid-cols-2 gap-4 max-w-lg mx-auto">
         <div class="bg-cardinal text-white rounded-xl p-5 shadow-lg text-center">
-          <div class="text-3xl mb-2">&#129681;</div>
+          <div class="text-3xl mb-2">&#9917;</div>
           <div class="font-fun text-xl font-bold">Coach JJ Oslund</div>
           <div class="text-sm opacity-90">Head Coach</div>
-          <a href="tel:6306212033" class="text-gold font-bold mt-1 inline-block">630-621-2033</a>
+          <a href="tel:6306212033" class="text-gold font-bold mt-1 inline-block hover:text-white transition">630-621-2033</a>
+          <br><a href="mailto:jjoslund@gmail.com" class="text-sm opacity-80 hover:text-gold transition">jjoslund@gmail.com</a>
         </div>
         <div class="bg-cardinal text-white rounded-xl p-5 shadow-lg text-center">
-          <div class="text-3xl mb-2">&#129681;</div>
+          <div class="text-3xl mb-2">&#9917;</div>
           <div class="font-fun text-xl font-bold">Coach Zach Oslund</div>
           <div class="text-sm opacity-90">Assistant Coach</div>
-          <a href="tel:6304143120" class="text-gold font-bold mt-1 inline-block">630-414-3120</a>
+          <a href="tel:6304143120" class="text-gold font-bold mt-1 inline-block hover:text-white transition">630-414-3120</a>
+          <br><a href="mailto:zachoslund@gmail.com" class="text-sm opacity-80 hover:text-gold transition">zachoslund@gmail.com</a>
         </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SNACK SIGNUP -->
+  <section id="snacks" class="py-12 md:py-16 px-4 bg-gradient-to-b from-cream to-gold/20">
+    <div class="max-w-5xl mx-auto">
+      <h2 class="font-fun text-4xl md:text-5xl font-bold text-field-dark text-center mb-2">
+        &#127839; Snack Signup
+      </h2>
+      <p class="text-center text-gray-600 mb-8">We need 2 volunteers per game &mdash; one for snacks, one for drinks. Claim your spot!</p>
+
+      <div id="snack-grid" class="space-y-3">
+        <!-- Filled by JS -->
+        <div class="text-center text-gray-500 py-8">Loading snack signup...</div>
+      </div>
+
+      <div class="mt-6 p-4 bg-white/80 rounded-xl text-center text-sm text-gray-600">
+        <strong>Tip:</strong> Think individually-wrapped snacks (granola bars, fruit pouches, goldfish bags) and juice boxes or water bottles for ~20 kids. Keep it simple!
       </div>
     </div>
   </section>
@@ -582,25 +665,6 @@
     </div>
   </section>
 
-  <!-- SNACK SIGNUP -->
-  <section id="snacks" class="py-12 md:py-16 px-4 bg-gradient-to-b from-cream to-gold/20">
-    <div class="max-w-5xl mx-auto">
-      <h2 class="font-fun text-4xl md:text-5xl font-bold text-field-dark text-center mb-2">
-        &#127839; Snack Signup
-      </h2>
-      <p class="text-center text-gray-600 mb-8">We need 2 volunteers per game &mdash; one for snacks, one for drinks. Claim your spot!</p>
-
-      <div id="snack-grid" class="space-y-3">
-        <!-- Filled by JS -->
-        <div class="text-center text-gray-500 py-8">Loading snack signup...</div>
-      </div>
-
-      <div class="mt-6 p-4 bg-white/80 rounded-xl text-center text-sm text-gray-600">
-        <strong>Tip:</strong> Think individually-wrapped snacks (granola bars, fruit pouches, goldfish bags) and juice boxes or water bottles for ~20 kids. Keep it simple!
-      </div>
-    </div>
-  </section>
-
   <!-- SAFETY -->
   <section id="safety" class="py-12 md:py-16 px-4 bg-white">
     <div class="max-w-4xl mx-auto">
@@ -654,10 +718,10 @@
 
   <!-- SCRIPTS -->
   <script>
-    // ===== CONFIG =====
-    // TODO: Replace with your Supabase project URL and anon key
-    const SUPABASE_URL = 'YOUR_SUPABASE_URL';
-    const SUPABASE_ANON_KEY = 'YOUR_SUPABASE_ANON_KEY';
+    // Wrap in DOMContentLoaded + expose functions to window for inline onclick handlers
+    (function() {
+    const SUPABASE_URL = 'https://vesnrbqikjmtqwmugrkv.supabase.co';
+    const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZlc25yYnFpa2ptdHF3bXVncmt2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzM5NDI5NzksImV4cCI6MjA4OTUxODk3OX0.XZaucpNFe2ofBZ2KVHvHCxfM3Ld2qVFVHi0BdXiDzCQ';
 
     // ===== DATA =====
     const games = [
@@ -859,13 +923,50 @@
       URL.revokeObjectURL(a.href);
     }
 
+    // ===== PRACTICE CALENDAR =====
+    function downloadPracticesICS() {
+      // Thursdays 5-6pm starting April 9, skip bye weeks, end after last game (Jun 13)
+      const practiceEvents = [];
+      const start = new Date('2026-04-09');
+      const end = new Date('2026-06-13');
+      const d = new Date(start);
+      let week = 0;
+      while (d <= end) {
+        week++;
+        const y = d.getFullYear();
+        const m = String(d.getMonth() + 1).padStart(2, '0');
+        const day = String(d.getDate()).padStart(2, '0');
+        const dtStart = `${y}${m}${day}T170000`;
+        const dtEnd = `${y}${m}${day}T180000`;
+        practiceEvents.push([
+          'BEGIN:VEVENT',
+          `DTSTART;TZID=America/Chicago:${dtStart}`,
+          `DTEND;TZID=America/Chicago:${dtEnd}`,
+          `SUMMARY:PeeWee Soccer Practice - Team Arkansas`,
+          `DESCRIPTION:Weekly practice\\nEmerson Elementary, Wheaton IL`,
+          `LOCATION:Emerson Elementary School, Wheaton, IL`,
+          'STATUS:CONFIRMED',
+          `UID:arkansas-practice-${y}${m}${day}@teamarkansas`,
+          'END:VEVENT'
+        ].join('\r\n'));
+        d.setDate(d.getDate() + 7);
+      }
+      const ics = wrapICS(practiceEvents.join('\r\n'));
+      const blob = new Blob([ics], { type: 'text/calendar;charset=utf-8' });
+      const a = document.createElement('a');
+      a.href = URL.createObjectURL(blob);
+      a.download = 'Team_Arkansas_Practices.ics';
+      a.click();
+      URL.revokeObjectURL(a.href);
+    }
+
     // ===== SNACK SIGNUP (SUPABASE) =====
     let supabase = null;
     let snackData = {}; // { 'game_date-role': 'FamilyName' }
     let activeDropdown = null;
 
     function initSupabase() {
-      if (SUPABASE_URL === 'YOUR_SUPABASE_URL') {
+      if (!SUPABASE_URL || SUPABASE_URL === 'YOUR_SUPABASE_URL') {
         renderSnacksFallback();
         return;
       }
@@ -1018,8 +1119,30 @@
       `;
     }
 
-    // Initialize
-    document.addEventListener('DOMContentLoaded', initSupabase);
+    // Initialize — wait for Supabase CDN to load
+    function tryInit() {
+      if (window.supabase?.createClient) {
+        initSupabase();
+      } else {
+        setTimeout(tryInit, 100);
+      }
+    }
+    // Expose functions used by inline onclick handlers to window
+    window.toggleMobileNav = toggleMobileNav;
+    window.downloadCSV = downloadCSV;
+    window.downloadICS = downloadICS;
+    window.downloadAllICS = downloadAllICS;
+    window.downloadPracticesICS = downloadPracticesICS;
+    window.showFamilyDropdown = showFamilyDropdown;
+    window.unclaimSlot = unclaimSlot;
+    window.claimSlot = claimSlot;
+
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', tryInit);
+    } else {
+      tryInit();
+    }
+    })();
   </script>
 </body>
 </html>
