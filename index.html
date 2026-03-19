@@ -1,0 +1,1025 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Team Arkansas - Spring 2026 PeeWee Soccer</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@400;600;700;800&family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            field: '#2d6a4f',
+            'field-light': '#40916c',
+            'field-dark': '#1b4332',
+            cardinal: '#9B1B30',
+            'cardinal-light': '#c4324d',
+            gold: '#f4a261',
+            cream: '#fefae0',
+          },
+          fontFamily: {
+            fun: ['Baloo 2', 'cursive'],
+            body: ['Nunito', 'sans-serif'],
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    * { scroll-behavior: smooth; }
+    body { font-family: 'Nunito', sans-serif; }
+    section[id] { scroll-margin-top: 60px; }
+
+    /* Grass stripe background */
+    .grass-bg {
+      background: repeating-linear-gradient(
+        0deg,
+        #2d6a4f 0px, #2d6a4f 40px,
+        #348a5e 40px, #348a5e 80px
+      );
+    }
+
+    /* Bouncing soccer ball */
+    @keyframes bounce-spin {
+      0%, 100% { transform: translateY(0) rotate(0deg); }
+      50% { transform: translateY(-20px) rotate(180deg); }
+    }
+    .ball-bounce { animation: bounce-spin 2s ease-in-out infinite; }
+
+    /* Floating animation */
+    @keyframes float {
+      0%, 100% { transform: translateY(0px); }
+      50% { transform: translateY(-10px); }
+    }
+    .float { animation: float 3s ease-in-out infinite; }
+
+    /* Kick animation */
+    @keyframes kick {
+      0% { transform: rotate(0deg); }
+      25% { transform: rotate(-15deg); }
+      50% { transform: rotate(10deg); }
+      100% { transform: rotate(0deg); }
+    }
+
+    /* Jersey colors */
+    .jersey-blue { background: #1e40af; color: white; }
+    .jersey-white { background: white; color: #1e40af; border: 2px solid #1e40af; }
+
+    /* Nav active state */
+    .nav-link:hover { background: rgba(255,255,255,0.2); border-radius: 8px; }
+
+    /* Countdown pulse */
+    @keyframes pulse-glow {
+      0%, 100% { box-shadow: 0 0 5px rgba(244,162,97,0.5); }
+      50% { box-shadow: 0 0 20px rgba(244,162,97,0.8); }
+    }
+    .countdown-glow { animation: pulse-glow 2s ease-in-out infinite; }
+
+    /* Snack slot styling */
+    .snack-slot {
+      transition: all 0.2s ease;
+      cursor: pointer;
+    }
+    .snack-slot:hover { transform: scale(1.02); }
+    .snack-slot.claimed { cursor: default; }
+
+    /* Mobile nav */
+    .mobile-nav { backdrop-filter: blur(10px); }
+
+    /* Print styles */
+    @media print {
+      .no-print { display: none !important; }
+      .grass-bg { background: white !important; }
+    }
+
+    /* Dropdown styling */
+    .family-dropdown {
+      position: absolute;
+      background: white;
+      border: 2px solid #2d6a4f;
+      border-radius: 12px;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+      z-index: 50;
+      max-height: 300px;
+      overflow-y: auto;
+      min-width: 200px;
+    }
+    .family-dropdown button {
+      display: block;
+      width: 100%;
+      text-align: left;
+      padding: 10px 16px;
+      transition: background 0.15s;
+      font-family: 'Nunito', sans-serif;
+      font-weight: 600;
+    }
+    .family-dropdown button:hover {
+      background: #e8f5e9;
+    }
+    .family-dropdown button:first-child { border-radius: 10px 10px 0 0; }
+    .family-dropdown button:last-child { border-radius: 0 0 10px 10px; }
+  </style>
+</head>
+<body class="bg-cream text-gray-800">
+
+  <!-- NAV -->
+  <nav class="bg-field-dark/95 text-white sticky top-0 z-50 no-print shadow-lg">
+    <div class="max-w-6xl mx-auto px-4">
+      <div class="flex items-center justify-between h-14">
+        <a href="#top" class="font-fun text-xl font-bold flex items-center gap-2">
+          <span class="text-2xl">&#9917;</span> Team Arkansas
+        </a>
+        <!-- Desktop nav -->
+        <div class="hidden md:flex items-center gap-1 text-sm font-semibold">
+          <a href="#schedule" class="nav-link px-3 py-1.5">Schedule</a>
+          <a href="#practice" class="nav-link px-3 py-1.5">Practice</a>
+          <a href="#field-map" class="nav-link px-3 py-1.5">Field Map</a>
+          <a href="#roster" class="nav-link px-3 py-1.5">Roster</a>
+          <a href="#gear" class="nav-link px-3 py-1.5">Gear</a>
+          <a href="#rules" class="nav-link px-3 py-1.5">Rules</a>
+          <a href="#snacks" class="nav-link px-3 py-1.5">Snacks</a>
+          <a href="#safety" class="nav-link px-3 py-1.5">Safety</a>
+        </div>
+        <!-- Mobile hamburger -->
+        <button onclick="toggleMobileNav()" class="md:hidden text-2xl" aria-label="Menu">&#9776;</button>
+      </div>
+    </div>
+    <!-- Mobile nav dropdown -->
+    <div id="mobile-nav" class="md:hidden hidden mobile-nav bg-field-dark/98 pb-4">
+      <div class="flex flex-col items-center gap-2 text-base font-semibold pt-2">
+        <a href="#schedule" onclick="toggleMobileNav()" class="nav-link px-4 py-2 w-full text-center">Schedule</a>
+        <a href="#practice" onclick="toggleMobileNav()" class="nav-link px-4 py-2 w-full text-center">Practice</a>
+        <a href="#field-map" onclick="toggleMobileNav()" class="nav-link px-4 py-2 w-full text-center">Field Map</a>
+        <a href="#roster" onclick="toggleMobileNav()" class="nav-link px-4 py-2 w-full text-center">Roster</a>
+        <a href="#gear" onclick="toggleMobileNav()" class="nav-link px-4 py-2 w-full text-center">Gear</a>
+        <a href="#rules" onclick="toggleMobileNav()" class="nav-link px-4 py-2 w-full text-center">Rules</a>
+        <a href="#snacks" onclick="toggleMobileNav()" class="nav-link px-4 py-2 w-full text-center">Snacks</a>
+        <a href="#safety" onclick="toggleMobileNav()" class="nav-link px-4 py-2 w-full text-center">Safety</a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- HERO -->
+  <section id="top" class="grass-bg text-white relative overflow-hidden">
+    <div class="absolute inset-0 opacity-10">
+      <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-64 h-64 border-4 border-white rounded-full"></div>
+      <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-4 h-4 bg-white rounded-full"></div>
+      <div class="absolute top-0 left-1/2 -translate-x-1/2 w-44 h-20 border-4 border-t-0 border-white"></div>
+      <div class="absolute bottom-0 left-1/2 -translate-x-1/2 w-44 h-20 border-4 border-b-0 border-white"></div>
+    </div>
+    <div class="relative max-w-4xl mx-auto px-4 py-16 md:py-24 text-center">
+      <div class="ball-bounce text-6xl md:text-8xl mb-4 inline-block">&#9917;</div>
+      <h1 class="font-fun text-5xl md:text-7xl font-extrabold mb-2 drop-shadow-lg">
+        Team Arkansas
+      </h1>
+      <div class="inline-block bg-cardinal px-6 py-2 rounded-full text-lg md:text-xl font-bold mb-6 shadow-lg">
+        Spring 2026 PeeWee Soccer
+      </div>
+      <p class="text-lg md:text-xl max-w-2xl mx-auto leading-relaxed opacity-95">
+        Hey Team Arkansas families! We're pumped to coach your kiddos this spring.
+        Here's everything you need for an awesome season of soccer, snacks, and fun!
+      </p>
+      <div class="mt-8" id="countdown-container">
+        <!-- Countdown filled by JS -->
+      </div>
+      <p class="mt-6 text-sm opacity-75">Season: April 9 &ndash; June 13, 2026</p>
+    </div>
+    <!-- Grass edge -->
+    <svg class="absolute bottom-0 w-full" viewBox="0 0 1440 60" preserveAspectRatio="none">
+      <path d="M0,60 L0,30 Q60,0 120,30 Q180,60 240,30 Q300,0 360,30 Q420,60 480,30 Q540,0 600,30 Q660,60 720,30 Q780,0 840,30 Q900,60 960,30 Q1020,0 1080,30 Q1140,60 1200,30 Q1260,0 1320,30 Q1380,60 1440,30 L1440,60 Z" fill="#fefae0"/>
+    </svg>
+  </section>
+
+  <!-- GAME SCHEDULE -->
+  <section id="schedule" class="py-12 md:py-16 px-4">
+    <div class="max-w-5xl mx-auto">
+      <h2 class="font-fun text-4xl md:text-5xl font-bold text-field-dark text-center mb-2">
+        &#128197; Game Schedule
+      </h2>
+      <p class="text-center text-gray-600 mb-8">All games at <strong>Seven Gables Park</strong> &bull; 1750 Naperville Rd, Wheaton</p>
+
+      <div class="overflow-x-auto rounded-2xl shadow-lg">
+        <table class="w-full text-sm md:text-base">
+          <thead>
+            <tr class="bg-field-dark text-white font-fun text-base">
+              <th class="px-3 py-3 text-left">Week</th>
+              <th class="px-3 py-3 text-left">Date</th>
+              <th class="px-3 py-3 text-left">Time</th>
+              <th class="px-3 py-3 text-left">Field</th>
+              <th class="px-3 py-3 text-left">Opponent</th>
+              <th class="px-3 py-3 text-center">Jersey</th>
+              <th class="px-3 py-3 text-center no-print">Calendar</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr class="bg-white border-b hover:bg-green-50 transition">
+              <td class="px-3 py-3 font-bold">1</td>
+              <td class="px-3 py-3">Sat, Apr 18</td>
+              <td class="px-3 py-3">1:30 PM</td>
+              <td class="px-3 py-3">A1</td>
+              <td class="px-3 py-3 font-semibold">vs Wyoming</td>
+              <td class="px-3 py-3 text-center"><span class="jersey-white px-3 py-1 rounded-full text-xs font-bold">WHITE</span></td>
+              <td class="px-3 py-3 text-center no-print"><button onclick="downloadICS('2026-04-18','13:30','Wyoming','A1','White')" class="text-field hover:text-cardinal transition" title="Add to Calendar">&#128197;+</button></td>
+            </tr>
+            <tr class="bg-green-50 border-b hover:bg-green-100 transition">
+              <td class="px-3 py-3 font-bold">2</td>
+              <td class="px-3 py-3">Sat, Apr 25</td>
+              <td class="px-3 py-3">12:00 PM</td>
+              <td class="px-3 py-3">A1</td>
+              <td class="px-3 py-3 font-semibold">vs Nevada</td>
+              <td class="px-3 py-3 text-center"><span class="jersey-blue px-3 py-1 rounded-full text-xs font-bold">BLUE</span></td>
+              <td class="px-3 py-3 text-center no-print"><button onclick="downloadICS('2026-04-25','12:00','Nevada','A1','Blue')" class="text-field hover:text-cardinal transition" title="Add to Calendar">&#128197;+</button></td>
+            </tr>
+            <tr class="bg-white border-b hover:bg-green-50 transition">
+              <td class="px-3 py-3 font-bold">3</td>
+              <td class="px-3 py-3">Sat, May 2</td>
+              <td class="px-3 py-3">9:00 AM</td>
+              <td class="px-3 py-3">A2</td>
+              <td class="px-3 py-3 font-semibold">vs Texas</td>
+              <td class="px-3 py-3 text-center"><span class="jersey-blue px-3 py-1 rounded-full text-xs font-bold">BLUE</span></td>
+              <td class="px-3 py-3 text-center no-print"><button onclick="downloadICS('2026-05-02','09:00','Texas','A2','Blue')" class="text-field hover:text-cardinal transition" title="Add to Calendar">&#128197;+</button></td>
+            </tr>
+            <tr class="bg-green-50 border-b hover:bg-green-100 transition">
+              <td class="px-3 py-3 font-bold">4</td>
+              <td class="px-3 py-3">Sat, May 9</td>
+              <td class="px-3 py-3">10:30 AM</td>
+              <td class="px-3 py-3">A2</td>
+              <td class="px-3 py-3 font-semibold">vs New Hampshire</td>
+              <td class="px-3 py-3 text-center"><span class="jersey-white px-3 py-1 rounded-full text-xs font-bold">WHITE</span></td>
+              <td class="px-3 py-3 text-center no-print"><button onclick="downloadICS('2026-05-09','10:30','New Hampshire','A2','White')" class="text-field hover:text-cardinal transition" title="Add to Calendar">&#128197;+</button></td>
+            </tr>
+            <tr class="bg-gold/20 border-b">
+              <td class="px-3 py-3 font-bold">5</td>
+              <td class="px-3 py-3">Sat, May 16</td>
+              <td class="px-3 py-3 text-gray-500" colspan="5"><em>&#127796; BYE WEEK &mdash; Enjoy the weekend!</em></td>
+            </tr>
+            <tr class="bg-gold/20 border-b">
+              <td class="px-3 py-3 font-bold">6</td>
+              <td class="px-3 py-3">Sat, May 23</td>
+              <td class="px-3 py-3 text-gray-500" colspan="5"><em>&#127796; BYE WEEK &mdash; Memorial Day Weekend</em></td>
+            </tr>
+            <tr class="bg-white border-b hover:bg-green-50 transition">
+              <td class="px-3 py-3 font-bold">7</td>
+              <td class="px-3 py-3">Sat, May 30</td>
+              <td class="px-3 py-3">9:00 AM</td>
+              <td class="px-3 py-3">A1</td>
+              <td class="px-3 py-3 font-semibold">vs South Dakota</td>
+              <td class="px-3 py-3 text-center"><span class="jersey-blue px-3 py-1 rounded-full text-xs font-bold">BLUE</span></td>
+              <td class="px-3 py-3 text-center no-print"><button onclick="downloadICS('2026-05-30','09:00','South Dakota','A1','Blue')" class="text-field hover:text-cardinal transition" title="Add to Calendar">&#128197;+</button></td>
+            </tr>
+            <tr class="bg-green-50 border-b hover:bg-green-100 transition">
+              <td class="px-3 py-3 font-bold">8</td>
+              <td class="px-3 py-3">Sat, Jun 6</td>
+              <td class="px-3 py-3">1:30 PM</td>
+              <td class="px-3 py-3">A1</td>
+              <td class="px-3 py-3 font-semibold">vs Connecticut</td>
+              <td class="px-3 py-3 text-center"><span class="jersey-blue px-3 py-1 rounded-full text-xs font-bold">BLUE</span></td>
+              <td class="px-3 py-3 text-center no-print"><button onclick="downloadICS('2026-06-06','13:30','Connecticut','A1','Blue')" class="text-field hover:text-cardinal transition" title="Add to Calendar">&#128197;+</button></td>
+            </tr>
+            <tr class="bg-white hover:bg-green-50 transition">
+              <td class="px-3 py-3 font-bold">9</td>
+              <td class="px-3 py-3">Sat, Jun 13</td>
+              <td class="px-3 py-3">12:00 PM</td>
+              <td class="px-3 py-3">A2</td>
+              <td class="px-3 py-3 font-semibold">vs Missouri</td>
+              <td class="px-3 py-3 text-center"><span class="jersey-white px-3 py-1 rounded-full text-xs font-bold">WHITE</span></td>
+              <td class="px-3 py-3 text-center no-print"><button onclick="downloadICS('2026-06-13','12:00','Missouri','A2','White')" class="text-field hover:text-cardinal transition" title="Add to Calendar">&#128197;+</button></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="flex flex-wrap gap-3 justify-center mt-6 no-print">
+        <button onclick="downloadCSV()" class="bg-field-dark hover:bg-field text-white font-bold py-2.5 px-6 rounded-full shadow-md transition flex items-center gap-2">
+          <span>&#128190;</span> Download Schedule CSV
+        </button>
+        <button onclick="downloadAllICS()" class="bg-cardinal hover:bg-cardinal-light text-white font-bold py-2.5 px-6 rounded-full shadow-md transition flex items-center gap-2">
+          <span>&#128197;</span> Add All Games to Calendar
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <!-- PRACTICE -->
+  <section id="practice" class="py-12 md:py-16 px-4 bg-white">
+    <div class="max-w-5xl mx-auto">
+      <h2 class="font-fun text-4xl md:text-5xl font-bold text-field-dark text-center mb-8">
+        &#129355; Practice Info
+      </h2>
+      <div class="grid md:grid-cols-2 gap-8 items-start">
+        <div class="bg-gradient-to-br from-green-50 to-cream rounded-2xl p-8 shadow-lg">
+          <div class="text-5xl mb-4">&#127939;</div>
+          <h3 class="font-fun text-2xl font-bold text-field-dark mb-4">Weekly Practice</h3>
+          <ul class="space-y-3 text-lg">
+            <li class="flex items-start gap-3">
+              <span class="text-2xl">&#128197;</span>
+              <div><strong>Every Thursday</strong></div>
+            </li>
+            <li class="flex items-start gap-3">
+              <span class="text-2xl">&#9200;</span>
+              <div><strong>5:00 &ndash; 6:00 PM</strong></div>
+            </li>
+            <li class="flex items-start gap-3">
+              <span class="text-2xl">&#128205;</span>
+              <div><strong>Emerson Elementary</strong><br><span class="text-gray-600">Wheaton, IL</span></div>
+            </li>
+            <li class="flex items-start gap-3">
+              <span class="text-2xl">&#127793;</span>
+              <div><strong>First Practice: April 9!</strong></div>
+            </li>
+          </ul>
+          <div class="mt-6 p-4 bg-gold/20 rounded-xl text-sm">
+            <strong>&#9888;&#65039; Weather Note:</strong> If rain or storms are in the forecast, check your email for updates. We'll make a call by 3 PM.
+            Check <a href="https://www.rainoutline.com/search.aspx?s=wheaton+park+district" target="_blank" class="text-cardinal font-bold underline">RainoutLine</a> for field closures.
+          </div>
+        </div>
+        <div class="rounded-2xl overflow-hidden shadow-lg">
+          <iframe
+            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2974.5!2d-88.11!3d41.85!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x880e5326b24e0d51%3A0x98a5e0e2e26a7f38!2sEmerson%20Elementary%20School!5e0!3m2!1sen!2sus!4v1710000000000!5m2!1sen!2sus"
+            width="100%" height="350" style="border:0;" allowfullscreen="" loading="lazy"
+            referrerpolicy="no-referrer-when-downgrade" class="w-full">
+          </iframe>
+          <div class="bg-field-dark text-white text-center py-2 text-sm font-semibold">
+            <a href="https://maps.google.com/?q=Emerson+Elementary+School+Wheaton+IL" target="_blank" class="hover:text-gold transition">
+              &#128204; Open in Google Maps
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SEVEN GABLES MAP -->
+  <section id="field-map" class="py-12 md:py-16 px-4 bg-cream">
+    <div class="max-w-5xl mx-auto">
+      <h2 class="font-fun text-4xl md:text-5xl font-bold text-field-dark text-center mb-2">
+        &#127967;&#65039; Game Day Field Map
+      </h2>
+      <p class="text-center text-gray-600 mb-8">Seven Gables Park &bull; 1750 Naperville Rd, Wheaton, IL</p>
+      <div class="bg-white rounded-2xl shadow-lg overflow-hidden">
+        <img src="seven-gables-map.png" alt="Seven Gables Park Field Map" class="w-full" loading="lazy">
+        <div class="p-4 bg-green-50 text-center text-sm">
+          <strong>Arkansas plays on fields A1 and A2</strong> &mdash; check the schedule above for which field each week!
+          <br>
+          <a href="https://maps.google.com/?q=Seven+Gables+Park+1750+Naperville+Rd+Wheaton+IL" target="_blank" class="text-cardinal font-bold underline mt-1 inline-block">
+            &#128204; Get Directions to Seven Gables Park
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ROSTER -->
+  <section id="roster" class="py-12 md:py-16 px-4 bg-white">
+    <div class="max-w-5xl mx-auto">
+      <h2 class="font-fun text-4xl md:text-5xl font-bold text-field-dark text-center mb-8">
+        &#129349; Team Roster
+      </h2>
+      <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
+        <!-- Players -->
+        <div class="bg-gradient-to-br from-green-50 to-white rounded-xl p-4 shadow text-center border-2 border-green-100 hover:border-field transition">
+          <div class="text-3xl mb-1">&#9917;</div>
+          <div class="font-fun font-bold text-field-dark">Abel Hardy</div>
+          <div class="text-xs text-gray-500">Parent: Eaden</div>
+        </div>
+        <div class="bg-gradient-to-br from-green-50 to-white rounded-xl p-4 shadow text-center border-2 border-green-100 hover:border-field transition">
+          <div class="text-3xl mb-1">&#9917;</div>
+          <div class="font-fun font-bold text-field-dark">Norris Hardy</div>
+          <div class="text-xs text-gray-500">Parent: Eaden</div>
+        </div>
+        <div class="bg-gradient-to-br from-green-50 to-white rounded-xl p-4 shadow text-center border-2 border-green-100 hover:border-field transition">
+          <div class="text-3xl mb-1">&#9917;</div>
+          <div class="font-fun font-bold text-field-dark">James Jewett</div>
+          <div class="text-xs text-gray-500">Parent: Meghan</div>
+        </div>
+        <div class="bg-gradient-to-br from-green-50 to-white rounded-xl p-4 shadow text-center border-2 border-green-100 hover:border-field transition">
+          <div class="text-3xl mb-1">&#9917;</div>
+          <div class="font-fun font-bold text-field-dark">Fern Jones</div>
+          <div class="text-xs text-gray-500">Parent: Kylie</div>
+        </div>
+        <div class="bg-gradient-to-br from-green-50 to-white rounded-xl p-4 shadow text-center border-2 border-green-100 hover:border-field transition">
+          <div class="text-3xl mb-1">&#9917;</div>
+          <div class="font-fun font-bold text-field-dark">Tre Jones</div>
+          <div class="text-xs text-gray-500">Parent: Kylie</div>
+        </div>
+        <div class="bg-gradient-to-br from-green-50 to-white rounded-xl p-4 shadow text-center border-2 border-green-100 hover:border-field transition">
+          <div class="text-3xl mb-1">&#9917;</div>
+          <div class="font-fun font-bold text-field-dark">Adelaide Kelly</div>
+          <div class="text-xs text-gray-500">Parent: Brian</div>
+        </div>
+        <div class="bg-gradient-to-br from-green-50 to-white rounded-xl p-4 shadow text-center border-2 border-green-100 hover:border-field transition">
+          <div class="text-3xl mb-1">&#9917;</div>
+          <div class="font-fun font-bold text-field-dark">Hudson Krumsieg</div>
+          <div class="text-xs text-gray-500">Parent: Caleb</div>
+        </div>
+        <div class="bg-gradient-to-br from-green-50 to-white rounded-xl p-4 shadow text-center border-2 border-green-100 hover:border-field transition">
+          <div class="text-3xl mb-1">&#9917;</div>
+          <div class="font-fun font-bold text-field-dark">Thomas Lindquist</div>
+          <div class="text-xs text-gray-500">Parent: Elise</div>
+        </div>
+        <div class="bg-gradient-to-br from-green-50 to-white rounded-xl p-4 shadow text-center border-2 border-green-100 hover:border-field transition">
+          <div class="text-3xl mb-1">&#9917;</div>
+          <div class="font-fun font-bold text-field-dark">Henry Lorier</div>
+          <div class="text-xs text-gray-500">Parent: Meghan</div>
+        </div>
+        <div class="bg-gradient-to-br from-green-50 to-white rounded-xl p-4 shadow text-center border-2 border-green-100 hover:border-field transition">
+          <div class="text-3xl mb-1">&#9917;</div>
+          <div class="font-fun font-bold text-field-dark">James Martin</div>
+          <div class="text-xs text-gray-500">Parent: Kayla</div>
+        </div>
+        <div class="bg-gradient-to-br from-green-50 to-white rounded-xl p-4 shadow text-center border-2 border-green-100 hover:border-field transition">
+          <div class="text-3xl mb-1">&#9917;</div>
+          <div class="font-fun font-bold text-field-dark">Levi Martin</div>
+          <div class="text-xs text-gray-500">Parent: Kayla</div>
+        </div>
+        <div class="bg-gradient-to-br from-green-50 to-white rounded-xl p-4 shadow text-center border-2 border-green-100 hover:border-field transition">
+          <div class="text-3xl mb-1">&#9917;</div>
+          <div class="font-fun font-bold text-field-dark">Owen Oslund</div>
+          <div class="text-xs text-gray-500">Parent: Jonathan</div>
+        </div>
+        <div class="bg-gradient-to-br from-green-50 to-white rounded-xl p-4 shadow text-center border-2 border-green-100 hover:border-field transition">
+          <div class="text-3xl mb-1">&#9917;</div>
+          <div class="font-fun font-bold text-field-dark">Rose Oslund</div>
+          <div class="text-xs text-gray-500">Parent: Olivia</div>
+        </div>
+        <div class="bg-gradient-to-br from-green-50 to-white rounded-xl p-4 shadow text-center border-2 border-green-100 hover:border-field transition">
+          <div class="text-3xl mb-1">&#9917;</div>
+          <div class="font-fun font-bold text-field-dark">Oliver Tovsen</div>
+          <div class="text-xs text-gray-500">Parent: Bridget</div>
+        </div>
+        <div class="bg-gradient-to-br from-green-50 to-white rounded-xl p-4 shadow text-center border-2 border-green-100 hover:border-field transition">
+          <div class="text-3xl mb-1">&#9917;</div>
+          <div class="font-fun font-bold text-field-dark">Lucy Waterman</div>
+          <div class="text-xs text-gray-500">Parent: Faith</div>
+        </div>
+        <div class="bg-gradient-to-br from-green-50 to-white rounded-xl p-4 shadow text-center border-2 border-green-100 hover:border-field transition">
+          <div class="text-3xl mb-1">&#9917;</div>
+          <div class="font-fun font-bold text-field-dark">Wesley Waterman</div>
+          <div class="text-xs text-gray-500">Parent: Faith</div>
+        </div>
+        <div class="bg-gradient-to-br from-green-50 to-white rounded-xl p-4 shadow text-center border-2 border-green-100 hover:border-field transition">
+          <div class="text-3xl mb-1">&#9917;</div>
+          <div class="font-fun font-bold text-field-dark">Ellie Garrett</div>
+          <div class="text-xs text-gray-500">Parent: Kristin</div>
+        </div>
+      </div>
+
+      <!-- Coaches -->
+      <div class="mt-10 grid sm:grid-cols-2 gap-4 max-w-lg mx-auto">
+        <div class="bg-cardinal text-white rounded-xl p-5 shadow-lg text-center">
+          <div class="text-3xl mb-2">&#129681;</div>
+          <div class="font-fun text-xl font-bold">Coach JJ Oslund</div>
+          <div class="text-sm opacity-90">Head Coach</div>
+          <a href="tel:6306212033" class="text-gold font-bold mt-1 inline-block">630-621-2033</a>
+        </div>
+        <div class="bg-cardinal text-white rounded-xl p-5 shadow-lg text-center">
+          <div class="text-3xl mb-2">&#129681;</div>
+          <div class="font-fun text-xl font-bold">Coach Zach Oslund</div>
+          <div class="text-sm opacity-90">Assistant Coach</div>
+          <a href="tel:6304143120" class="text-gold font-bold mt-1 inline-block">630-414-3120</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- WHAT TO BRING -->
+  <section id="gear" class="py-12 md:py-16 px-4 bg-cream">
+    <div class="max-w-4xl mx-auto">
+      <h2 class="font-fun text-4xl md:text-5xl font-bold text-field-dark text-center mb-8">
+        &#127890; What to Bring
+      </h2>
+      <div class="grid sm:grid-cols-2 md:grid-cols-3 gap-4">
+        <div class="bg-white rounded-xl p-5 shadow text-center hover:shadow-lg transition">
+          <div class="text-4xl mb-3">&#129406;</div>
+          <h3 class="font-fun font-bold text-lg text-field-dark">Shin Guards</h3>
+          <p class="text-sm text-gray-600 mt-1">Must be covered by long socks!</p>
+        </div>
+        <div class="bg-white rounded-xl p-5 shadow text-center hover:shadow-lg transition">
+          <div class="text-4xl mb-3">&#128095;</div>
+          <h3 class="font-fun font-bold text-lg text-field-dark">Soccer Cleats</h3>
+          <p class="text-sm text-gray-600 mt-1">Or sneakers. No baseball/football spikes.</p>
+        </div>
+        <div class="bg-white rounded-xl p-5 shadow text-center hover:shadow-lg transition">
+          <div class="text-4xl mb-3">&#9917;</div>
+          <h3 class="font-fun font-bold text-lg text-field-dark">Size 3 Ball</h3>
+          <p class="text-sm text-gray-600 mt-1">Write your child's name + number on it!</p>
+        </div>
+        <div class="bg-white rounded-xl p-5 shadow text-center hover:shadow-lg transition">
+          <div class="text-4xl mb-3">&#127861;</div>
+          <h3 class="font-fun font-bold text-lg text-field-dark">Water Bottle</h3>
+          <p class="text-sm text-gray-600 mt-1">Hydration is key!</p>
+        </div>
+        <div class="bg-white rounded-xl p-5 shadow text-center hover:shadow-lg transition">
+          <div class="text-4xl mb-3">&#128085;</div>
+          <h3 class="font-fun font-bold text-lg text-field-dark">Team Jersey</h3>
+          <p class="text-sm text-gray-600 mt-1">Blue + White &mdash; $20 at the WPD Community Center</p>
+        </div>
+        <div class="bg-white rounded-xl p-5 shadow text-center hover:shadow-lg transition">
+          <div class="text-4xl mb-3">&#128556;</div>
+          <h3 class="font-fun font-bold text-lg text-field-dark">No Jewelry</h3>
+          <p class="text-sm text-gray-600 mt-1">No watches, bracelets, etc. Medical IDs OK.</p>
+        </div>
+      </div>
+      <div class="mt-6 text-center text-sm text-gray-500">
+        Jerseys available at WPD Community Center &bull; 1777 S Blanchard St, Wheaton
+      </div>
+    </div>
+  </section>
+
+  <!-- RULES -->
+  <section id="rules" class="py-12 md:py-16 px-4 bg-white">
+    <div class="max-w-4xl mx-auto">
+      <h2 class="font-fun text-4xl md:text-5xl font-bold text-field-dark text-center mb-8">
+        &#128220; Quick Rules
+      </h2>
+      <div class="grid sm:grid-cols-2 gap-6">
+        <div class="space-y-4">
+          <div class="flex gap-3 items-start">
+            <span class="bg-field text-white rounded-full w-8 h-8 flex items-center justify-center font-bold text-sm shrink-0">4</span>
+            <div><strong>4 vs 4 format</strong> &mdash; Size 3 ball. Minimum 3 players to start.</div>
+          </div>
+          <div class="flex gap-3 items-start">
+            <span class="text-2xl">&#128085;</span>
+            <div><strong>Home = Blue, Away = White</strong> &mdash; Check the schedule for your jersey color each week!</div>
+          </div>
+          <div class="flex gap-3 items-start">
+            <span class="text-2xl">&#128721;</span>
+            <div><strong>No heading, no slide tackling</strong> &mdash; Safety first for our little ones!</div>
+          </div>
+          <div class="flex gap-3 items-start">
+            <span class="text-2xl">&#9200;</span>
+            <div><strong>Equal playing time</strong> &mdash; Every player plays at least half of each game.</div>
+          </div>
+        </div>
+        <div class="space-y-4">
+          <div class="flex gap-3 items-start">
+            <span class="text-2xl">&#9917;</span>
+            <div><strong>No corner kicks</strong> &mdash; Ball over the goal line = goal kick.</div>
+          </div>
+          <div class="flex gap-3 items-start">
+            <span class="text-2xl">&#9878;&#65039;</span>
+            <div><strong>5+ goal lead?</strong> &mdash; Trailing team gets to add an extra player for balance.</div>
+          </div>
+          <div class="flex gap-3 items-start">
+            <span class="text-2xl">&#129681;</span>
+            <div><strong>Coaches ref</strong> &mdash; Coaches officiate the games (bring a whistle and stopwatch!).</div>
+          </div>
+          <div class="flex gap-3 items-start">
+            <span class="text-2xl">&#127775;</span>
+            <div><strong>Have fun!</strong> &mdash; This is PeeWee soccer. It's all about learning and having a blast!</div>
+          </div>
+        </div>
+      </div>
+      <div class="mt-6 text-center">
+        <a href="https://www.wpdathletics.org" target="_blank" class="text-cardinal font-bold underline text-sm">
+          Full rules at wpdathletics.org
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- SNACK SIGNUP -->
+  <section id="snacks" class="py-12 md:py-16 px-4 bg-gradient-to-b from-cream to-gold/20">
+    <div class="max-w-5xl mx-auto">
+      <h2 class="font-fun text-4xl md:text-5xl font-bold text-field-dark text-center mb-2">
+        &#127839; Snack Signup
+      </h2>
+      <p class="text-center text-gray-600 mb-8">We need 2 volunteers per game &mdash; one for snacks, one for drinks. Claim your spot!</p>
+
+      <div id="snack-grid" class="space-y-3">
+        <!-- Filled by JS -->
+        <div class="text-center text-gray-500 py-8">Loading snack signup...</div>
+      </div>
+
+      <div class="mt-6 p-4 bg-white/80 rounded-xl text-center text-sm text-gray-600">
+        <strong>Tip:</strong> Think individually-wrapped snacks (granola bars, fruit pouches, goldfish bags) and juice boxes or water bottles for ~20 kids. Keep it simple!
+      </div>
+    </div>
+  </section>
+
+  <!-- SAFETY -->
+  <section id="safety" class="py-12 md:py-16 px-4 bg-white">
+    <div class="max-w-4xl mx-auto">
+      <h2 class="font-fun text-4xl md:text-5xl font-bold text-field-dark text-center mb-8">
+        &#9888;&#65039; Safety & Weather
+      </h2>
+      <div class="grid sm:grid-cols-3 gap-4">
+        <div class="bg-yellow-50 border-2 border-yellow-200 rounded-xl p-5 text-center">
+          <div class="text-4xl mb-3">&#9889;</div>
+          <h3 class="font-fun font-bold text-lg">Lightning / Thunder</h3>
+          <p class="text-sm text-gray-700 mt-2">ALL play stops immediately. Everyone off the field. Wait <strong>30 minutes</strong> after the last flash/boom before returning.</p>
+        </div>
+        <div class="bg-blue-50 border-2 border-blue-200 rounded-xl p-5 text-center">
+          <div class="text-4xl mb-3">&#127783;&#65039;</div>
+          <h3 class="font-fun font-bold text-lg">Rain / Field Closures</h3>
+          <p class="text-sm text-gray-700 mt-2">Check <a href="https://www.rainoutline.com/search.aspx?s=wheaton+park+district" target="_blank" class="text-cardinal font-bold underline">RainoutLine</a> for field status. We'll email updates by 3 PM on game/practice days.</p>
+        </div>
+        <div class="bg-green-50 border-2 border-green-200 rounded-xl p-5 text-center">
+          <div class="text-4xl mb-3">&#128106;</div>
+          <h3 class="font-fun font-bold text-lg">Pickup Policy</h3>
+          <p class="text-sm text-gray-700 mt-2">No child will be released without a parent or guardian present. Please be on time for pickup!</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="grass-bg text-white py-10 px-4 relative">
+    <svg class="absolute top-0 w-full -mt-px" viewBox="0 0 1440 60" preserveAspectRatio="none">
+      <path d="M0,0 L0,30 Q60,60 120,30 Q180,0 240,30 Q300,60 360,30 Q420,0 480,30 Q540,60 600,30 Q660,0 720,30 Q780,60 840,30 Q900,0 960,30 Q1020,60 1080,30 Q1140,0 1200,30 Q1260,60 1320,30 Q1380,0 1440,30 L1440,0 Z" fill="white"/>
+    </svg>
+    <div class="max-w-4xl mx-auto text-center pt-6">
+      <div class="text-4xl mb-3">&#9917;</div>
+      <h3 class="font-fun text-2xl font-bold mb-4">Go Team Arkansas!</h3>
+      <div class="flex flex-wrap justify-center gap-6 text-sm mb-6">
+        <div>
+          <strong>Coach JJ</strong><br>
+          <a href="tel:6306212033" class="text-gold hover:text-white transition">630-621-2033</a>
+        </div>
+        <div>
+          <strong>Coach Zach</strong><br>
+          <a href="tel:6304143120" class="text-gold hover:text-white transition">630-414-3120</a>
+        </div>
+      </div>
+      <div class="text-sm opacity-75">
+        <a href="https://www.wpdathletics.org" target="_blank" class="underline hover:text-gold transition">wpdathletics.org</a>
+        &bull; Wheaton Park District PeeWee Soccer &bull; Spring 2026
+      </div>
+    </div>
+  </footer>
+
+  <!-- SCRIPTS -->
+  <script>
+    // ===== CONFIG =====
+    // TODO: Replace with your Supabase project URL and anon key
+    const SUPABASE_URL = 'YOUR_SUPABASE_URL';
+    const SUPABASE_ANON_KEY = 'YOUR_SUPABASE_ANON_KEY';
+
+    // ===== DATA =====
+    const games = [
+      { week: 1, date: '2026-04-18', time: '1:30 PM', rawTime: '13:30', field: 'A1', opponent: 'Wyoming', home: false, jersey: 'White' },
+      { week: 2, date: '2026-04-25', time: '12:00 PM', rawTime: '12:00', field: 'A1', opponent: 'Nevada', home: true, jersey: 'Blue' },
+      { week: 3, date: '2026-05-02', time: '9:00 AM', rawTime: '09:00', field: 'A2', opponent: 'Texas', home: true, jersey: 'Blue' },
+      { week: 4, date: '2026-05-09', time: '10:30 AM', rawTime: '10:30', field: 'A2', opponent: 'New Hampshire', home: false, jersey: 'White' },
+      { week: 7, date: '2026-05-30', time: '9:00 AM', rawTime: '09:00', field: 'A1', opponent: 'South Dakota', home: true, jersey: 'Blue' },
+      { week: 8, date: '2026-06-06', time: '1:30 PM', rawTime: '13:30', field: 'A1', opponent: 'Connecticut', home: true, jersey: 'Blue' },
+      { week: 9, date: '2026-06-13', time: '12:00 PM', rawTime: '12:00', field: 'A2', opponent: 'Missouri', home: false, jersey: 'White' },
+    ];
+
+    const families = [
+      'Hardy', 'Jewett', 'Jones', 'Kelly', 'Krumsieg', 'Lindquist',
+      'Lorier', 'Martin', 'Oslund', 'Tovsen', 'Waterman', 'Garrett'
+    ];
+
+    // ===== MOBILE NAV =====
+    function toggleMobileNav() {
+      document.getElementById('mobile-nav').classList.toggle('hidden');
+    }
+
+    // ===== COUNTDOWN =====
+    function updateCountdown() {
+      const now = new Date();
+      const container = document.getElementById('countdown-container');
+      let nextGame = null;
+
+      // Check for next practice (Thursdays 5-6pm, starting April 9)
+      const practiceStart = new Date('2026-04-09T17:00:00');
+      let nextPractice = null;
+      if (now < practiceStart) {
+        nextPractice = practiceStart;
+      } else {
+        const d = new Date(now);
+        const day = d.getDay();
+        const daysUntilThursday = (4 - day + 7) % 7 || 7;
+        d.setDate(d.getDate() + daysUntilThursday);
+        d.setHours(17, 0, 0, 0);
+        if (d > now && d <= new Date('2026-06-13')) nextPractice = d;
+      }
+
+      // Find next game
+      for (const g of games) {
+        const [h, m] = g.rawTime.split(':');
+        const gameDate = new Date(g.date + 'T' + g.rawTime + ':00');
+        if (gameDate > now) { nextGame = { ...g, dateObj: gameDate }; break; }
+      }
+
+      // Show the sooner event
+      let target = null, label = '';
+      if (nextGame && nextPractice) {
+        if (nextPractice < nextGame.dateObj) {
+          target = nextPractice; label = 'Next Practice';
+        } else {
+          target = nextGame.dateObj; label = 'Next Game: vs ' + nextGame.opponent;
+        }
+      } else if (nextGame) {
+        target = nextGame.dateObj; label = 'Next Game: vs ' + nextGame.opponent;
+      } else if (nextPractice) {
+        target = nextPractice; label = 'Next Practice';
+      }
+
+      if (!target) {
+        container.innerHTML = '<div class="text-xl font-bold text-gold">Season Complete! Great job, Team Arkansas!</div>';
+        return;
+      }
+
+      const diff = target - now;
+      const days = Math.floor(diff / 86400000);
+      const hours = Math.floor((diff % 86400000) / 3600000);
+      const mins = Math.floor((diff % 3600000) / 60000);
+
+      container.innerHTML = `
+        <div class="countdown-glow inline-block bg-white/15 backdrop-blur-sm rounded-2xl px-6 py-4">
+          <div class="text-sm font-semibold text-gold mb-1">${label}</div>
+          <div class="flex gap-4 justify-center font-fun text-3xl md:text-4xl font-bold">
+            <div><span>${days}</span><span class="text-sm block opacity-75">days</span></div>
+            <div><span>${hours}</span><span class="text-sm block opacity-75">hrs</span></div>
+            <div><span>${mins}</span><span class="text-sm block opacity-75">min</span></div>
+          </div>
+        </div>
+      `;
+    }
+    updateCountdown();
+    setInterval(updateCountdown, 60000);
+
+    // ===== CSV DOWNLOAD =====
+    function downloadCSV() {
+      let csv = 'Week,Date,Time,Field,Opponent,Home/Away,Jersey Color\n';
+      csv += '1,4/18/2026,1:30 PM,Seven Gables Park - A1,Wyoming,Away,White\n';
+      csv += '2,4/25/2026,12:00 PM,Seven Gables Park - A1,Nevada,Home,Blue\n';
+      csv += '3,5/2/2026,9:00 AM,Seven Gables Park - A2,Texas,Home,Blue\n';
+      csv += '4,5/9/2026,10:30 AM,Seven Gables Park - A2,New Hampshire,Away,White\n';
+      csv += '5,5/16/2026,BYE,,,,\n';
+      csv += '6,5/23/2026,BYE,,,,\n';
+      csv += '7,5/30/2026,9:00 AM,Seven Gables Park - A1,South Dakota,Home,Blue\n';
+      csv += '8,6/6/2026,1:30 PM,Seven Gables Park - A1,Connecticut,Home,Blue\n';
+      csv += '9,6/13/2026,12:00 PM,Seven Gables Park - A2,Missouri,Away,White\n';
+      const blob = new Blob([csv], { type: 'text/csv' });
+      const a = document.createElement('a');
+      a.href = URL.createObjectURL(blob);
+      a.download = 'Team_Arkansas_Spring_2026_Schedule.csv';
+      a.click();
+      URL.revokeObjectURL(a.href);
+    }
+
+    // ===== ICS CALENDAR =====
+    function formatICSDate(dateStr, timeStr) {
+      // dateStr: 2026-04-18, timeStr: 13:30
+      const [y, m, d] = dateStr.split('-');
+      const [h, min] = timeStr.split(':');
+      return `${y}${m}${d}T${h}${min}00`;
+    }
+
+    function addHour(dateStr, timeStr) {
+      const dt = new Date(dateStr + 'T' + timeStr + ':00');
+      dt.setHours(dt.getHours() + 1);
+      const y = dt.getFullYear();
+      const m = String(dt.getMonth() + 1).padStart(2, '0');
+      const d = String(dt.getDate()).padStart(2, '0');
+      const h = String(dt.getHours()).padStart(2, '0');
+      const min = String(dt.getMinutes()).padStart(2, '0');
+      return `${y}${m}${d}T${h}${min}00`;
+    }
+
+    function makeICSEvent(dateStr, timeStr, opponent, field, jersey) {
+      const dtStart = formatICSDate(dateStr, timeStr);
+      const dtEnd = addHour(dateStr, timeStr);
+      const summary = `PeeWee Soccer: Arkansas vs ${opponent}`;
+      const description = `Team Arkansas vs ${opponent}\\nJersey: ${jersey}\\nField: ${field}\\nSeven Gables Park, 1750 Naperville Rd, Wheaton IL`;
+      const location = `Seven Gables Park - Field ${field}, 1750 Naperville Rd, Wheaton, IL 60187`;
+
+      return [
+        'BEGIN:VEVENT',
+        `DTSTART;TZID=America/Chicago:${dtStart}`,
+        `DTEND;TZID=America/Chicago:${dtEnd}`,
+        `SUMMARY:${summary}`,
+        `DESCRIPTION:${description}`,
+        `LOCATION:${location}`,
+        'STATUS:CONFIRMED',
+        `UID:arkansas-${dateStr}-${opponent.toLowerCase().replace(/\s/g,'')}@teamarkansas`,
+        'END:VEVENT'
+      ].join('\r\n');
+    }
+
+    function wrapICS(events) {
+      return [
+        'BEGIN:VCALENDAR',
+        'VERSION:2.0',
+        'PRODID:-//Team Arkansas//PeeWee Soccer//EN',
+        'CALSCALE:GREGORIAN',
+        'METHOD:PUBLISH',
+        'X-WR-CALNAME:Team Arkansas Soccer',
+        'X-WR-TIMEZONE:America/Chicago',
+        'BEGIN:VTIMEZONE',
+        'TZID:America/Chicago',
+        'BEGIN:DAYLIGHT',
+        'TZOFFSETFROM:-0600',
+        'TZOFFSETTO:-0500',
+        'TZNAME:CDT',
+        'DTSTART:19700308T020000',
+        'RRULE:FREQ=YEARLY;BYMONTH=3;BYDAY=2SU',
+        'END:DAYLIGHT',
+        'BEGIN:STANDARD',
+        'TZOFFSETFROM:-0500',
+        'TZOFFSETTO:-0600',
+        'TZNAME:CST',
+        'DTSTART:19701101T020000',
+        'RRULE:FREQ=YEARLY;BYMONTH=11;BYDAY=1SU',
+        'END:STANDARD',
+        'END:VTIMEZONE',
+        events,
+        'END:VCALENDAR'
+      ].join('\r\n');
+    }
+
+    function downloadICS(date, time, opponent, field, jersey) {
+      const event = makeICSEvent(date, time, opponent, field, jersey);
+      const ics = wrapICS(event);
+      const blob = new Blob([ics], { type: 'text/calendar;charset=utf-8' });
+      const a = document.createElement('a');
+      a.href = URL.createObjectURL(blob);
+      a.download = `Arkansas_vs_${opponent.replace(/\s/g, '_')}.ics`;
+      a.click();
+      URL.revokeObjectURL(a.href);
+    }
+
+    function downloadAllICS() {
+      const events = games.map(g =>
+        makeICSEvent(g.date, g.rawTime, g.opponent, g.field, g.jersey)
+      ).join('\r\n');
+      const ics = wrapICS(events);
+      const blob = new Blob([ics], { type: 'text/calendar;charset=utf-8' });
+      const a = document.createElement('a');
+      a.href = URL.createObjectURL(blob);
+      a.download = 'Team_Arkansas_All_Games.ics';
+      a.click();
+      URL.revokeObjectURL(a.href);
+    }
+
+    // ===== SNACK SIGNUP (SUPABASE) =====
+    let supabase = null;
+    let snackData = {}; // { 'game_date-role': 'FamilyName' }
+    let activeDropdown = null;
+
+    function initSupabase() {
+      if (SUPABASE_URL === 'YOUR_SUPABASE_URL') {
+        renderSnacksFallback();
+        return;
+      }
+      supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+      loadSnacks();
+      // Real-time subscription
+      supabase.channel('snack_signups')
+        .on('postgres_changes', { event: '*', schema: 'public', table: 'snack_signups' }, () => loadSnacks())
+        .subscribe();
+    }
+
+    async function loadSnacks() {
+      const { data, error } = await supabase.from('snack_signups').select('*');
+      if (error) { console.error(error); renderSnacksFallback(); return; }
+      snackData = {};
+      (data || []).forEach(row => {
+        snackData[`${row.game_date}-${row.role}`] = row.family_name;
+      });
+      renderSnacks();
+    }
+
+    async function claimSlot(gameDate, role, familyName) {
+      closeDropdown();
+      const { error } = await supabase.from('snack_signups').upsert({
+        game_date: gameDate,
+        role: role,
+        family_name: familyName
+      }, { onConflict: 'game_date,role' });
+      if (error) { alert('Could not save. Try again!'); console.error(error); }
+      else { snackData[`${gameDate}-${role}`] = familyName; renderSnacks(); }
+    }
+
+    async function unclaimSlot(gameDate, role) {
+      const { error } = await supabase.from('snack_signups').delete()
+        .eq('game_date', gameDate).eq('role', role);
+      if (error) { alert('Could not remove. Try again!'); console.error(error); }
+      else { delete snackData[`${gameDate}-${role}`]; renderSnacks(); }
+    }
+
+    function closeDropdown() {
+      if (activeDropdown) { activeDropdown.remove(); activeDropdown = null; }
+      document.removeEventListener('click', closeDropdownOnOutsideClick);
+    }
+
+    function closeDropdownOnOutsideClick(e) {
+      if (activeDropdown && !activeDropdown.contains(e.target)) closeDropdown();
+    }
+
+    function showFamilyDropdown(btn, gameDate, role) {
+      closeDropdown();
+      const dropdown = document.createElement('div');
+      dropdown.className = 'family-dropdown';
+      families.forEach(fam => {
+        const b = document.createElement('button');
+        b.textContent = fam;
+        b.onclick = (e) => { e.stopPropagation(); claimSlot(gameDate, role, fam); };
+        dropdown.appendChild(b);
+      });
+      // Position dropdown
+      const rect = btn.getBoundingClientRect();
+      dropdown.style.position = 'fixed';
+      dropdown.style.top = (rect.bottom + 4) + 'px';
+      dropdown.style.left = Math.max(8, Math.min(rect.left, window.innerWidth - 220)) + 'px';
+      document.body.appendChild(dropdown);
+      activeDropdown = dropdown;
+      setTimeout(() => document.addEventListener('click', closeDropdownOnOutsideClick), 10);
+    }
+
+    function renderSnacks() {
+      const grid = document.getElementById('snack-grid');
+      const dateFormatter = new Intl.DateTimeFormat('en-US', { month: 'short', day: 'numeric', weekday: 'short' });
+
+      let html = `
+        <div class="overflow-x-auto rounded-2xl shadow-lg bg-white">
+          <table class="w-full text-sm md:text-base">
+            <thead>
+              <tr class="bg-field-dark text-white font-fun">
+                <th class="px-4 py-3 text-left">Game Date</th>
+                <th class="px-4 py-3 text-left">Opponent</th>
+                <th class="px-4 py-3 text-center">&#127839; Snacks</th>
+                <th class="px-4 py-3 text-center">&#129380; Drinks</th>
+              </tr>
+            </thead>
+            <tbody>
+      `;
+
+      games.forEach((g, i) => {
+        const d = new Date(g.date + 'T12:00:00');
+        const dateStr = dateFormatter.format(d);
+        const snackKey = `${g.date}-snacks`;
+        const drinkKey = `${g.date}-drinks`;
+        const snackClaimed = snackData[snackKey];
+        const drinkClaimed = snackData[drinkKey];
+        const rowBg = i % 2 === 0 ? 'bg-white' : 'bg-green-50';
+
+        html += `<tr class="${rowBg} border-b">`;
+        html += `<td class="px-4 py-3 font-semibold">${dateStr}</td>`;
+        html += `<td class="px-4 py-3">vs ${g.opponent}</td>`;
+
+        // Snack slot
+        if (snackClaimed) {
+          html += `<td class="px-4 py-3 text-center">
+            <span class="inline-flex items-center gap-2 bg-green-100 text-green-800 px-3 py-1.5 rounded-full font-bold text-sm">
+              &#9989; ${snackClaimed}
+              <button onclick="unclaimSlot('${g.date}','snacks')" class="text-red-400 hover:text-red-600 text-xs" title="Remove">&times;</button>
+            </span>
+          </td>`;
+        } else {
+          html += `<td class="px-4 py-3 text-center">
+            <button onclick="showFamilyDropdown(this,'${g.date}','snacks')"
+              class="snack-slot bg-gold/20 hover:bg-gold/40 border-2 border-dashed border-gold text-gold font-bold px-4 py-1.5 rounded-full text-sm transition">
+              Sign Up!
+            </button>
+          </td>`;
+        }
+
+        // Drink slot
+        if (drinkClaimed) {
+          html += `<td class="px-4 py-3 text-center">
+            <span class="inline-flex items-center gap-2 bg-blue-100 text-blue-800 px-3 py-1.5 rounded-full font-bold text-sm">
+              &#9989; ${drinkClaimed}
+              <button onclick="unclaimSlot('${g.date}','drinks')" class="text-red-400 hover:text-red-600 text-xs" title="Remove">&times;</button>
+            </span>
+          </td>`;
+        } else {
+          html += `<td class="px-4 py-3 text-center">
+            <button onclick="showFamilyDropdown(this,'${g.date}','drinks')"
+              class="snack-slot bg-blue-50 hover:bg-blue-100 border-2 border-dashed border-blue-300 text-blue-600 font-bold px-4 py-1.5 rounded-full text-sm transition">
+              Sign Up!
+            </button>
+          </td>`;
+        }
+
+        html += '</tr>';
+      });
+
+      html += '</tbody></table></div>';
+      grid.innerHTML = html;
+    }
+
+    function renderSnacksFallback() {
+      // Fallback when Supabase isn't connected yet
+      const grid = document.getElementById('snack-grid');
+      grid.innerHTML = `
+        <div class="bg-yellow-50 border-2 border-yellow-200 rounded-2xl p-8 text-center">
+          <div class="text-4xl mb-3">&#128295;</div>
+          <h3 class="font-fun text-xl font-bold text-field-dark mb-2">Snack Signup Coming Soon!</h3>
+          <p class="text-gray-600">The interactive snack signup is being set up. In the meantime, text Coach JJ at <a href="tel:6306212033" class="text-cardinal font-bold">630-621-2033</a> to claim your game!</p>
+        </div>
+      `;
+    }
+
+    // Initialize
+    document.addEventListener('DOMContentLoaded', initSupabase);
+  </script>
+</body>
+</html>
